@@ -9,12 +9,12 @@ class City(models.Model):
 
 
 class Information(models.Model):
-    city = models.OneToOneField(City, on_delete=models.CASCADE)
-    temperature = models.CharField("Температура", max_length=5)
-    icon = models.CharField("Иконка", max_length=5)
-    coord_lon = models.CharField("Долгота", max_length=5)
-    coord_lat = models.CharField("Широта", max_length=5)
-    sky = models.CharField("Облачность", max_length=5)
+    city = models.OneToOneField(City, on_delete=models.CASCADE, null=True)
+    temperature = models.CharField("Температура", max_length=5, null=True)
+    icon = models.CharField("Иконка", max_length=5, null=True)
+    coord_lon = models.CharField("Долгота", max_length=5, null=True)
+    coord_lat = models.CharField("Широта", max_length=5, null=True)
+    sky = models.CharField("Облачность", max_length=5, null=True)
 
 
 class Forecast(models.Model):
