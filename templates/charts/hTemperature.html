@@ -1,0 +1,61 @@
+{% extends 'charts/base.html' %}
+
+{% block title %}History of temperature{% endblock title %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            var ctx = document.getElementById("myChart").getContext("2d");
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [new Date("2015-5-17 13:3").toLocaleString(), new Date("2015-3-25 13:2").toLocaleString(), new Date("2015-4-25 14:12").toLocaleString()],
+                    datasets: [{
+                        label: 'Demo',
+                        data: [{
+                            t: new Date("2015-4-15 13:3"),
+                            y: 12
+                        },
+                            {
+                                t: new Date("2015-8-25 13:2"),
+                                y: 3
+                            },
+                            {
+                                t: new Date("2015-8-28 13:2"),
+                                y: 30
+                            }
+                        ],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgb(208,80,108)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            type: 'time'
+                        }]
+                    }
+                }
+            })
+        });
+    </script>
+{% endblock scripts %}
+
+{% block content %}
+    <canvas id="myChart" width="400" height="100"></canvas>
+{% endblock content %}
