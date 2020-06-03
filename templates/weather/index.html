@@ -27,18 +27,19 @@
             <form action="{% url 'add_city' %}" method="post" id="addForm">
                 {% csrf_token %}
                 <label for="city">Погода в вашем городе</label><br>
-                {{ form.name }}
+                {{ form }} <br><br><br><br><br><br><br>
+{#                {{ info_form }}#}
                 <input type="submit" name="send" value="Узнать" class="mt-2 btn btn-danger">
 
             </form>
 
-             <form action="{% url 'add_info' %}" method="post" id="addForm">
-                {% csrf_token %}
-                <label for="city">Погода в вашем городе</label><br>
-                {{ info_form }}
-                <input type="submit" name="send" value="Обновить" class="mt-2 btn btn-danger">
-
-            </form>
+{#             <form action="{% url 'add_info'%}" method="post" id="addForm">#}
+{#                {% csrf_token %}#}
+{#                <label for="city">Погода в вашем городе</label><br>#}
+{#                {{ info_form }}#}
+{#                <input type="submit" name="send" value="Обновить" class="mt-2 btn btn-danger">#}
+{##}
+{#            </form>#}
         </div>
     </div>
 
