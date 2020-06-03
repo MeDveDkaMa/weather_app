@@ -43,11 +43,14 @@ class AddCityView(BaseView):
             form.save()
 
         info_form_data = form.cleaned_data
+        context["c_info"] = info_form_data
 
-        print(info_form_data)
+
+        # print(info_form_data)
 
         try:
             info_city = City.objects.get(name=info_form_data["name"])
+            context["cur_info"] = info_city
             print("Найдено")
         except:
             raise Http404
@@ -70,8 +73,9 @@ class AddCityView(BaseView):
             Information.objects.filter(city_id=info_city.id).update(coord_lat=city_info['coord_lat'])
             Information.objects.filter(city_id=info_city.id).update(sky=city_info['sky'])
             Information.objects.filter(city_id=info_city.id).update(icon=city_info['icon'])
-
-        return redirect("information_city")
+        print("CONTEXT:", context)
+        return self.render_to_response(context)
+        # return redirect("information_city" + "/" + info_city.id.__str__())
 
 
 class InformationCityView(BaseView):
@@ -90,7 +94,6 @@ class AddInformationView(BaseView):
         context = super().get_context_data(**kwargs)
         # print("GETCONTEXTINFO")
         return context
-
 
     def post(self, request, *args, **kwargs):
         form = AddInformationForm(request.POST)

@@ -21,28 +21,49 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-7 offset-3">
+        <div class="col-5 offset-1">
             <h1>Погодное приложение</h1>
-{#            <form action="{% url 'add_city' %}" method="post" id="addForm">#}
             <form action="{% url 'add_city' %}" method="post" id="addForm">
                 {% csrf_token %}
                 <label for="city">Погода в вашем городе</label><br>
-                {{ form }} <br><br><br><br><br><br><br>
-{#                {{ info_form }}#}
+                {{ form.name }}
                 <input type="submit" name="send" value="Узнать" class="mt-2 btn btn-danger">
-
             </form>
-
-{#             <form action="{% url 'add_info'%}" method="post" id="addForm">#}
-{#                {% csrf_token %}#}
-{#                <label for="city">Погода в вашем городе</label><br>#}
-{#                {{ info_form }}#}
-{#                <input type="submit" name="send" value="Обновить" class="mt-2 btn btn-danger">#}
-{##}
-{#            </form>#}
         </div>
-    </div>
+        <div class="col-5 offset-1">
+            <h1>Информация</h1>
+            {% for city in city_list %}
+                <div class="alert alert-info">
+                    <div class="row">
+                        <div class="col-9">
+                            <b>Город:</b> {{ city.name }} <br>
+                            <b>Температура:</b> {{ city.information.temperature }} <sup>o</sup> <br>
+                            <b>Долгота:</b> {{ city.information.coord_lon }} <br>
+                            <b>Широта:</b> {{ city.information.coord_lat }} <br>
+                            <b>Облачность:</b> {{ city.information.sky }}<br>
+                            <img src="http://openweathermap.org/img/w/{{ city.information.icon }}.png" alt="wIcon"
+                                 class="img-thumbnail">
+                        </div>
+                    </div>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {{ formHistory.name }}
+                        <input type="submit" name="_history" value="История" class="mt-2 btn btn-danger">
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
 
+
+        {#             <form action="{% url 'add_info'%}" method="post" id="addForm">#}
+        {#                {% csrf_token %}#}
+        {#                <label for="city">Погода в вашем городе</label><br>#}
+        {#                {{ info_form }}#}
+        {#                <input type="submit" name="send" value="Обновить" class="mt-2 btn btn-danger">#}
+        {##}
+        {#            </form>#}
+    </div>
 </div>
+
 </body>
 </html>
