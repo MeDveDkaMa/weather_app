@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Application</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+    <h5 class="my-0 mr-md-auto font-weight-normal">Weather Application</h5>
+    <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="http://localhost:8000/api/ctemperature">TEST</a>
+        <a class="p-2 text-dark" href="http://localhost:8000/api/htemperature">TEST2</a>
+        <a class="p-2 text-dark" href="#">Enterprise</a>
+        <a class="p-2 text-dark" href="#">Support</a>
+        <a class="p-2 text-dark" href="#">Pricing</a>
+    </nav>
+    <a class="btn btn-outline-primary" href="http://localhost:8000/admin">Admin</a>
+</div>
+
+{#<div class="container">#}
+{#    <div class="row">#}
+{#        <div class="col-5 offset-1">#}
+{#            <h1>Погодное приложение</h1>#}
+{#            <form action="{% url 'add_city' 33 %}" method="post">#}
+{#                {% csrf_token %}#}
+{#                <label for="city">Погода в вашем городе</label><br>#}
+{#                {{ form.name }}#}
+{#                <input type="submit" name="send" value="Узнать" class="mt-2 btn btn-danger">#}
+{#            </form>#}
+{#        </div>#}
+        <div class="col-5 offset-1">
+            <h1>Информация</h1>
+        {% for city in city_list %}
+            {% for info in information_list %}
+                <div class="alert alert-info">
+                    <div class="row">
+                        <div class="col-9">
+                            <b>Город:</b> {{ city.name }} <br>
+                            <b>Город:</b> {{ info.id }} <br>
+                            <b>Температура:</b> {{ info.temperature }} <sup>o</sup> <br>
+                            <b>Небо:</b> {{ info.sky }}<br>
+                            <img src="http://openweathermap.org/img/w/{{ info.icon }}.png" alt="wIcon"
+                                 class="img-thumbnail">
+                        </div>
+                    </div>
+{#                    <form action="" method="post">#}
+{#                         {% csrf_token %}#}
+{#                        {{ formHistory.name }}#}
+{#                        <input type="submit" name="_history" value="История" class="mt-2 btn btn-danger">#}
+{#                    </form>#}
+                </div>
+            {% endfor %}
+         {% endfor %}
+        </div>
+    </div>
+</div>
+</body>
+</html>
