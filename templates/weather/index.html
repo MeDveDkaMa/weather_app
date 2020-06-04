@@ -21,22 +21,28 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-5 offset-1">
+        <div class="col-5">
             <h1>Погодное приложение</h1>
             <form action="{% url 'add_city' %}" method="post" id="addForm">
                 {% csrf_token %}
-                <label for="city">Погода в вашем городе</label><br>
+                <label for="city">Погода в вашем городе</label><br><br>
                 {{ form.name }}
+                <br>
                 <input type="submit" name="send" value="Узнать" class="mt-1 btn btn-danger">
             </form>
         </div>
-        <div class="col-5 offset-1">
-            <h1>Информация</h1>
-            <br>
-            <form action="{% url 'update_info' %}" method="post" id="addForm">
-                {% csrf_token %}
-                <input type="submit" name="send" value="Обновить" class="mt-3 btn btn-danger">
-            </form>
+        <div class="col-5 offset-2 ">
+            <div class="row">
+                <div class="col-md-3">
+                    <h1>Информация</h1>
+                </div>
+                <div class="col-md-3 offset-md-4">
+                    <form action="{% url 'update_info' %}" method="post" id="addForm">
+                        {% csrf_token %}
+                        <input type="submit" name="send" value="Обновить" class="mt-3 btn btn-danger">
+                    </form>
+                </div>
+            </div>
             <br>
             <form action="{% url 'all_temperature_info' %}" method="get" id="addForm">
                 <input type="submit" name="" value="График" class="mt-3 btn btn-danger">
@@ -55,10 +61,21 @@
                                  class="img-thumbnail">
                         </div>
                     </div>
-                    <form action="{% url 'history_city' city.information.city_id %}" method="get">
-                        {{ formHistory.name }}
-                        <input type="submit" name="" value="История" class="mt-2 btn btn-danger">
-                    </form>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <form action="{% url 'history_city' city.information.city_id %}" method="get">
+                                {{ formHistory.name }}
+                                <input type="submit" name="" value="Подробнее" class="mt-2 btn btn-danger">
+                            </form>
+                        </div>
+                        <div class="col-md-1 offset-md-1">
+                            <form action="{% url 'history_city' city.information.city_id %}" method="get">
+                                {{ formHistory.name }}
+                                <input type="submit" name="" value="История" class="mt-2 btn btn-danger">
+                            </form>
+                        </div>
+                    </div>
+                    <br>
                 </div>
             {% endfor %}
         </div>
