@@ -55,10 +55,9 @@
                                  class="img-thumbnail">
                         </div>
                     </div>
-                    <form action="{% url 'history_city' city.information.city_id %}" method="post">
-                        {% csrf_token %}
+                    <form action="{% url 'history_city' city.information.city_id %}" method="get">
                         {{ formHistory.name }}
-                        <input type="submit" name="_history" value="История" class="mt-2 btn btn-danger">
+                        <input type="submit" name="" value="История" class="mt-2 btn btn-danger">
                     </form>
                 </div>
             {% endfor %}
