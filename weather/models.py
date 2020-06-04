@@ -15,6 +15,13 @@ class Information(models.Model):
     coord_lon = models.CharField("Долгота", max_length=5, null=True)
     coord_lat = models.CharField("Широта", max_length=5, null=True)
     sky = models.CharField("Облачность", max_length=5, null=True)
+    pressure = models.CharField("Давление", max_length=5, null=True)
+    humidity = models.CharField("Влажность", max_length=5, null=True)
+    temp_min = models.CharField("Минимальная температура", max_length=5, null=True)
+    temp_max = models.CharField("Максимальная температура", max_length=5, null=True)
+    visibility = models.CharField("Влажность", max_length=5, null=True)
+    speed = models.CharField("Скорость ветра", max_length=5, null=True)
+    country = models.CharField("Страна", max_length=5, null=True)
 
 
 class Forecast(models.Model):
