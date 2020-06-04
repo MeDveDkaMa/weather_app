@@ -56,12 +56,19 @@ class AddCityView(BaseView):
         for city in cities:
             res = requests.get(url.format(city.name)).json()
             city_info = {
-                'city': city.name,
-                'temp': res["main"]["temp"],
-                'icon': res["weather"][0]["icon"],
-                'sky': res["weather"][0]["description"],
                 'coord_lon': res["coord"]["lon"],
                 'coord_lat': res["coord"]["lat"],
+                'sky': res["weather"][0]["description"],
+                'icon': res["weather"][0]["icon"],
+                'temp': res["main"]["temp"],
+                'pressure': res["main"]["pressure"],
+                'humidity': res["main"]["humidity"],
+                'temp_min': res["main"]["temp_min"],
+                'temp_max': res["main"]["temp_max"],
+                'visibility': res["visibility"],
+                'speed': res["wind"]["speed"],
+                'city': city.name,
+
             }
 
             Information.objects.update_or_create(city_id=info_city.id)
