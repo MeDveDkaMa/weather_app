@@ -38,6 +38,10 @@
                 <input type="submit" name="send" value="Обновить" class="mt-3 btn btn-danger">
             </form>
             <br>
+            <form action="{% url 'all_temperature_info' %}" method="get" id="addForm">
+                <input type="submit" name="" value="График" class="mt-3 btn btn-danger">
+            </form>
+            <br>
             {% for city in city_list %}
                 <div class="alert alert-info">
                     <div class="row">

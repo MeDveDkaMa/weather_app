@@ -124,3 +124,21 @@ class UpdateInformationView(BaseView):
             Information.objects.filter(city_id=city.id).update(icon=city_info['icon'])
 
         return redirect("/")
+
+
+class AllCityTemperatureView(BaseView):
+    template_name = 'charts/cTemperature.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context["city_context"] = City.objects.all()
+        return context
+
+
+class CityTemperatureHistory(TemplateView):
+    template_name = 'charts/hTemperature.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["qs"] = City.objects.all()
+        return context

@@ -3,17 +3,18 @@
 {% block title %}City temperature{% endblock title %}
 
 {% block scripts %}
+
     <script>
         $(document).ready(function () {
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: [{% for item in qs %}'{{ item.name }}',{% endfor %}
+                    labels: [{% for item in city_list %}'{{ item.name }}',{% endfor %}
                     ],
                     datasets: [{
                         label: '# of Temperature',
-                        data: [{% for item in qs %}{{ item.temp }},{% endfor %}
+                        data: [{% for item in city_list %}{{ item.information.temperature }}, {% endfor %}
                         ],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
@@ -36,9 +37,9 @@
                 },
                 options: {
                     layout: {
-                        padding:{
-                            left:250,
-                            right:250,
+                        padding: {
+                            left: 250,
+                            right: 250,
                             top: 10
                         }
                     },
