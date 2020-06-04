@@ -45,9 +45,6 @@ class AddCityView(BaseView):
         info_form_data = form.cleaned_data
         context["c_info"] = info_form_data
 
-
-        # print(info_form_data)
-
         try:
             info_city = City.objects.get(name=info_form_data["name"])
             context["cur_info"] = info_city
@@ -73,8 +70,9 @@ class AddCityView(BaseView):
             Information.objects.filter(city_id=info_city.id).update(coord_lat=city_info['coord_lat'])
             Information.objects.filter(city_id=info_city.id).update(sky=city_info['sky'])
             Information.objects.filter(city_id=info_city.id).update(icon=city_info['icon'])
-        print("CONTEXT:", context)
-        return self.render_to_response(context)
+        return redirect("/")
+        # return self.render_to_response(context)
+
         # return redirect("information_city" + "/" + info_city.id.__str__())
 
 
@@ -87,19 +85,42 @@ class InformationCityView(BaseView):
         return context
 
 
-class AddInformationView(BaseView):
+class HistoryCityView(BaseView):
+    template_name = 'charts/hTemperature.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(context)
+        return context
+
+
+class UpdateInformationView(BaseView):
     template_name = 'weather/index.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # print("GETCONTEXTINFO")
         return context
 
     def post(self, request, *args, **kwargs):
-        form = AddInformationForm(request.POST)
-        print(request.POST)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.city_id = 141
-            form.save()
+        token = 'ca8ee28f8bf42eb6948dba8bcc7aa661'
+        url = 'https://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=' + token
+
+        cities = City.objects.all()
+        for city in cities:
+            res = requests.get(url.format(city.name)).json()
+            city_info = {
+                'city': city.name,
+                'temp': res["main"]["temp"],
+                'icon': res["weather"][0]["icon"],
+                'sky': res["weather"][0]["description"],
+                'coord_lon': res["coord"]["lon"],
+                'coord_lat': res["coord"]["lat"],
+            }
+            print("API RESPONSE:", city_info)
+            Information.objects.filter(city_id=city.id).update(temperature=city_info['temp'])
+            Information.objects.filter(city_id=city.id).update(coord_lon=city_info['coord_lon'])
+            Information.objects.filter(city_id=city.id).update(coord_lat=city_info['coord_lat'])
+            Information.objects.filter(city_id=city.id).update(sky=city_info['sky'])
+            Information.objects.filter(city_id=city.id).update(icon=city_info['icon'])
+
         return redirect("/")
