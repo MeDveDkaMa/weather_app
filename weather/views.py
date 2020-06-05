@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from .models import City, Information, History
 from .forms import AddCityForm, AddInformationForm
+from datetime import datetime
 import requests
 
 
@@ -35,7 +36,7 @@ class AddCityView(BaseView):
 
     def post(self, request, *args, **kwargs):
         token = 'ca8ee28f8bf42eb6948dba8bcc7aa661'
-        url = 'https://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=' + token
+        url = 'https://api.openweathermap.org/data/2.5/weather?q={}&units=metric&lang=ru&appid=' + token
 
         context = super().get_context_data(**kwargs)
         form = AddCityForm(request.POST)
@@ -68,10 +69,10 @@ class AddCityView(BaseView):
                 'humidity': res["main"]["humidity"],
                 'visibility': res["visibility"],
                 'speed': res["wind"]["speed"],
-                'time': res["dt"],
+                'time': datetime.utcfromtimestamp(res["dt"]).strftime('%H:%M:%S %Y-%m-%d '),
                 'country': res["sys"]["country"],
-                'sunrise': res["sys"]["sunrise"],
-                'sunset': res["sys"]["sunset"],
+                'sunrise': datetime.utcfromtimestamp(res["sys"]["sunrise"]).strftime('%H:%M:%S'),
+                'sunset': datetime.utcfromtimestamp(res["sys"]["sunset"]).strftime('%H:%M:%S'),
                 'city': city.name
             }
 
@@ -104,7 +105,7 @@ class InformationCityView(BaseView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(context)
+        context["cur_city"] = City.objects.filter(id=kwargs["pk"])
         return context
 
 
@@ -126,7 +127,7 @@ class UpdateInformationView(BaseView):
 
     def post(self, request, *args, **kwargs):
         token = 'ca8ee28f8bf42eb6948dba8bcc7aa661'
-        url = 'https://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid=' + token
+        url = 'https://api.openweathermap.org/data/2.5/weather?q={}&units=metric&lang=ru&appid=' + token
 
         cities = City.objects.all()
         for city in cities:
@@ -144,10 +145,10 @@ class UpdateInformationView(BaseView):
                 'humidity': res["main"]["humidity"],
                 'visibility': res["visibility"],
                 'speed': res["wind"]["speed"],
-                'time': res["dt"],
+                'time': datetime.utcfromtimestamp(res["dt"]).strftime('%H:%M:%S %Y-%m-%d '),
                 'country': res["sys"]["country"],
-                'sunrise': res["sys"]["sunrise"],
-                'sunset': res["sys"]["sunset"],
+                'sunrise': datetime.utcfromtimestamp(res["sys"]["sunrise"]).strftime('%H:%M:%S'),
+                'sunset': datetime.utcfromtimestamp(res["sys"]["sunset"]).strftime('%H:%M:%S'),
                 'city': city.name,
             }
             print("API RESPONSE:", city_info)
