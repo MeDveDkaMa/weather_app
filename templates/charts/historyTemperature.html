@@ -9,21 +9,16 @@
             var myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: [new Date("2015-5-17 13:3").toLocaleString(), new Date("2015-3-25 13:2").toLocaleString(), new Date("2015-4-25 14:12").toLocaleString()],
+                    labels: [],
                     datasets: [{
-                        label: 'Demo',
-                        data: [{
-                            t: new Date("2015-4-15 13:3"),
-                            y: 12
-                        },
-                            {
-                                t: new Date("2015-8-25 13:2"),
-                                y: 3
-                            },
-                            {
-                                t: new Date("2015-8-28 13:2"),
-                                y: 30
-                            }
+                        label: 'temp',
+                        data: [
+                            {% for item in history_context %}
+                                {
+                                    t: new Date("{{item.time}}"),
+                                    y: {{item.temp}}
+                                },
+                            {% endfor %}
                         ],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',

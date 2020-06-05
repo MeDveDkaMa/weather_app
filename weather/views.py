@@ -5,15 +5,14 @@ from .models import City, Information, History
 from .forms import AddCityForm, AddInformationForm
 from datetime import datetime
 import requests
+import time
 
 
 class BaseView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["information_list"] = Information.objects.all()
         context["city_list"] = City.objects.all()
         context["form"] = AddCityForm
-        context["info_form"] = AddInformationForm
         return context
 
 
@@ -22,7 +21,6 @@ class CurrentTemperatureView(BaseView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(context)
         return context
 
 
@@ -109,15 +107,6 @@ class InformationCityView(BaseView):
         return context
 
 
-class HistoryCityView(BaseView):
-    template_name = 'charts/hTemperature.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        print(context)
-        return context
-
-
 class UpdateInformationView(BaseView):
     template_name = 'weather/index.html'
 
@@ -180,10 +169,32 @@ class AllCityTemperatureView(BaseView):
         return context
 
 
-class CityTemperatureHistory(TemplateView):
-    template_name = 'charts/hTemperature.html'
+class CityTemperatureHistory(BaseView):
+    template_name = 'charts/historyTemperature.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["qs"] = City.objects.all()
+
+        token = 'ca8ee28f8bf42eb6948dba8bcc7aa661'
+        url = 'http://api.openweathermap.org/data/2.5/onecall/timemachine?lat={}&lon={}&dt={}&units=metric&appid=' + token
+
+        lat = Information.objects.get(city_id=kwargs["pk"]).coord_lat
+        lon = Information.objects.get(city_id=kwargs["pk"]).coord_lon
+        # Current unix time
+        dt = int(time.time())
+        res = requests.get(url.format(lat, lon, dt)).json()
+
+        all_history = []
+
+        for i in range(0, 21):
+            history_info = {
+                'time': datetime.utcfromtimestamp(res["hourly"][i]["dt"]).strftime('%Y-%m-%d %H:%M '),
+                'temp': res["hourly"][i]["temp"],
+            }
+            all_history.append(history_info)
+
+        context["history_context"] = all_history
+
+        print(context["history_context"])
+
         return context
