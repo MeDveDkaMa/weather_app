@@ -1,58 +1,31 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Weather Application</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-</head>
-<body>
-
-<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-    <h5 class="my-0 mr-md-auto font-weight-normal">Weather Application</h5>
-    <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="http://localhost:8000/api/ctemperature">TEST</a>
-        <a class="p-2 text-dark" href="http://localhost:8000/api/htemperature">TEST2</a>
-        <a class="p-2 text-dark" href="#">Enterprise</a>
-        <a class="p-2 text-dark" href="#">Support</a>
-        <a class="p-2 text-dark" href="#">Pricing</a>
-    </nav>
-    <a class="btn btn-outline-primary" href="http://localhost:8000/admin">Admin</a>
-</div>
-
-<div class="col-5 offset-1">
-    <h1>Информация</h1>
-    {% for city in cur_city %}
-        <div class="alert alert-info">
-            <div class="row">
-                <div class="col-9">
-                    <b>Город:</b> {{ city.name }}  <br>
-                    <b>Страна:</b> {{ city.information.country }} <br>
-                    <b>Время:</b> {{ city.information.time }} <br>
-                    <b>Долгота:</b> {{ city.information.coord_lon }} <br>
-                    <b>Широта:</b> {{ city.information.coord_lat }} <br>
-                    <b>Температура:</b> {{ city.information.temperature }} <sup>o</sup> <br>
-                    <b>Чувствуется как:</b> {{ city.information.feels_like }} <sup>o</sup> <br>
-                    <b>Минимальная температура:</b> {{ city.information.temp_min }} <sup>o</sup> <br>
-                    <b>Максимальная температура:</b> {{ city.information.temp_max }} <sup>o</sup> <br>
-                    <b>Облачность:</b> {{ city.information.sky }}<br>
-                    <b>Давление:</b> {{ city.information.pressure }} hPa <br>
-                    <b>Влажность:</b> {{ city.information.humidity }} % <br>
-                    <b>Скорость ветра:</b> {{ city.information.speed }} m/s <br>
-                    <b>Восход:</b> {{ city.information.sunrise }} <br>
-                    <b>Закат:</b> {{ city.information.sunset }} <br>
-                    <img src="http://openweathermap.org/img/w/{{ city.information.icon }}.png" alt="wIcon"
-                         class="img-thumbnail">
+{% extends 'weather/base.html' %}
+{% block content %}
+    <div class="col-5 offset-1">
+        <h1>Информация</h1>
+        {% for city in cur_city %}
+            <div class="alert alert-info">
+                <div class="row">
+                    <div class="col-9">
+                        <b>Город:</b> {{ city.name }} <br>
+                        <b>Страна:</b> {{ city.information.country }} <br>
+                        <b>Время:</b> {{ city.information.time }} <br>
+                        <b>Долгота:</b> {{ city.information.coord_lon }} <br>
+                        <b>Широта:</b> {{ city.information.coord_lat }} <br>
+                        <b>Температура:</b> {{ city.information.temperature }} <sup>o</sup> <br>
+                        <b>Чувствуется как:</b> {{ city.information.feels_like }} <sup>o</sup> <br>
+                        <b>Минимальная температура:</b> {{ city.information.temp_min }} <sup>o</sup> <br>
+                        <b>Максимальная температура:</b> {{ city.information.temp_max }} <sup>o</sup> <br>
+                        <b>Облачность:</b> {{ city.information.sky }}<br>
+                        <b>Давление:</b> {{ city.information.pressure }} hPa <br>
+                        <b>Влажность:</b> {{ city.information.humidity }} % <br>
+                        <b>Скорость ветра:</b> {{ city.information.speed }} m/s <br>
+                        <b>Восход:</b> {{ city.information.sunrise }} <br>
+                        <b>Закат:</b> {{ city.information.sunset }} <br>
+                        <img src="http://openweathermap.org/img/w/{{ city.information.icon }}.png" alt="wIcon"
+                             class="img-thumbnail">
+                    </div>
                 </div>
             </div>
-            {#                    <form action="" method="post">#}
-            {#                         {% csrf_token %}#}
-            {#                        {{ formHistory.name }}#}
-            {#                        <input type="submit" name="_history" value="История" class="mt-2 btn btn-danger">#}
-            {#                    </form>#}
-        </div>
-    {% endfor %}
-</div>
-
-
-</body>
-</html>
+        {% endfor %}
+    </div>
+{% endblock content %}
