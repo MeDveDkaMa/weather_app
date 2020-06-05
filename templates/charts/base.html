@@ -8,7 +8,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- semantic UI -->
-    <link rel="stylesheet" type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css">
+    <link rel="stylesheet" type='text/css'
+          href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css">
     <!--Chart js-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.css"/>
@@ -22,12 +23,14 @@
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
     <h5 class="my-0 mr-md-auto font-weight-normal">Weather Application</h5>
     <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="#">Features</a>
+        <a class="p-2 text-dark" href="http://localhost:8000/api/ctemperature">TEST</a>
+        <a class="p-2 text-dark" href="http://localhost:8000/api/htemperature">TEST2</a>
         <a class="p-2 text-dark" href="#">Enterprise</a>
         <a class="p-2 text-dark" href="#">Support</a>
         <a class="p-2 text-dark" href="#">Pricing</a>
+        <a class="btn btn-outline-success" href="{% url "all_temperature_info" %}">Температура</a>
     </nav>
-    <a class="btn btn-outline-primary" href="http://localhost:8000/admin">Admin panel</a>
+    <a class="btn btn-outline-primary" href="http://localhost:8000/admin">Admin</a>
 </div>
 
 {% block scripts %}

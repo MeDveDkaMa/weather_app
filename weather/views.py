@@ -173,7 +173,7 @@ class UpdateInformationView(BaseView):
 
 
 class AllCityTemperatureView(BaseView):
-    template_name = 'charts/cTemperature.html'
+    template_name = 'charts/allTemperature.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
