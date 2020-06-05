@@ -1,84 +1,59 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Weather Application</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-</head>
-<body>
-
-<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-    <h5 class="my-0 mr-md-auto font-weight-normal">Weather Application</h5>
-    <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="http://localhost:8000/api/ctemperature">TEST</a>
-        <a class="p-2 text-dark" href="http://localhost:8000/api/htemperature">TEST2</a>
-        <a class="p-2 text-dark" href="#">Enterprise</a>
-        <a class="p-2 text-dark" href="#">Support</a>
-        <a class="p-2 text-dark" href="#">Pricing</a>
-        <a class="btn btn-outline-success" href="{% url "all_temperature_info" %}">Температура</a>
-    </nav>
-    <a class="btn btn-outline-primary" href="http://localhost:8000/admin">Admin</a>
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col-5">
-            <h1>Погодное приложение</h1>
-            <form action="{% url 'add_city' %}" method="post" id="addForm">
-                {% csrf_token %}
-                <label for="city">Погода в вашем городе</label><br><br>
-                {{ form.name }}
-                <br>
-                <input type="submit" name="send" value="Узнать" class="mt-1 btn btn-danger">
-            </form>
-        </div>
-        <div class="col-5 offset-2 ">
-            <div class="row">
-                <div class="col-md-3">
-                    <h1>Информация</h1>
-                </div>
-                <div class="col-md-3 offset-md-4">
-                    <form action="{% url 'update_info' %}" method="post" id="addForm">
-                        {% csrf_token %}
-                        <input type="submit" name="send" value="Обновить" class="mt-3 btn btn-success btn-sm">
-                    </form>
-                </div>
-            </div>
-{#            <br>#}
-{#            <form action="{% url 'all_temperature_info' %}" method="get" id="addForm">#}
-{#                <input type="submit" name="" value="График" class="mt-3 btn btn-danger">#}
-{#            </form>#}
-            <br>
-            {% for city in city_list %}
-                <div class="alert alert-info">
-                    <div class="row">
-                        <div class="col-9">
-                            <b>Город:</b> {{ city.name }} <br>
-                            <b>Температура:</b> {{ city.information.temperature }} <sup>o</sup> <br>
-                            <b>Облачность:</b> {{ city.information.sky }}<br>
-                            <img src="http://openweathermap.org/img/w/{{ city.information.icon }}.png" alt="wIcon"
-                                 class="img-thumbnail">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <form action="{% url 'information_city' city.information.city_id %}" method="get">
-                                {{ formHistory.name }}
-                                <input type="submit" name="" value="Подробнее" class="mt-2 btn btn-danger">
-                            </form>
-                        </div>
-                        <div class="col-md-1 offset-md-1">
-                            <form action="{% url 'history_city' city.information.city_id %}" method="get">
-                                {{ formHistory.name }}
-                                <input type="submit" name="" value="История" class="mt-2 btn btn-danger">
-                            </form>
-                        </div>
-                    </div>
+{% extends 'weather/base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-5">
+                <h1>Погодное приложение</h1>
+                <form action="{% url 'add_city' %}" method="post" id="addForm">
+                    {% csrf_token %}
+                    <label for="city">Погода в вашем городе</label><br><br>
+                    {{ form.name }}
                     <br>
+                    <input type="submit" name="send" value="Узнать" class="mt-1 btn btn-danger">
+                </form>
+            </div>
+            <div class="col-5 offset-2 ">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h1>Информация</h1>
+                    </div>
+                    <div class="col-md-3 offset-md-4">
+                        <form action="{% url 'update_info' %}" method="post" id="addForm">
+                            {% csrf_token %}
+                            <input type="submit" name="send" value="Обновить" class="mt-3 btn btn-success btn-sm">
+                        </form>
+                    </div>
                 </div>
-            {% endfor %}
+                <br>
+                {% for city in city_list %}
+                    <div class="alert alert-info">
+                        <div class="row">
+                            <div class="col-9">
+                                <b>Город:</b> {{ city.name }} <br>
+                                <b>Температура:</b> {{ city.information.temperature }} <sup>o</sup> <br>
+                                <b>Облачность:</b> {{ city.information.sky }}<br>
+                                <img src="http://openweathermap.org/img/w/{{ city.information.icon }}.png" alt="wIcon"
+                                     class="img-thumbnail">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <form action="{% url 'information_city' city.information.city_id %}" method="get">
+                                    {{ formHistory.name }}
+                                    <input type="submit" name="" value="Подробнее" class="mt-2 btn btn-danger">
+                                </form>
+                            </div>
+                            <div class="col-md-1 offset-md-1">
+                                <form action="{% url 'history_city' city.information.city_id %}" method="get">
+                                    {{ formHistory.name }}
+                                    <input type="submit" name="" value="История" class="mt-2 btn btn-danger">
+                                </form>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
-</div>
-</body>
-</html>
+{% endblock content %}
