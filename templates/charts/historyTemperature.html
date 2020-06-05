@@ -11,7 +11,7 @@
                 data: {
                     labels: [],
                     datasets: [{
-                        label: 'temp',
+                        label: 'temp of {{ city.name }}',
                         data: [
                             {% for item in history_context %}
                                 {

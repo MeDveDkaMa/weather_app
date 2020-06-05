@@ -183,9 +183,10 @@ class CityTemperatureHistory(BaseView):
         # Current unix time
         dt = int(time.time())
         res = requests.get(url.format(lat, lon, dt)).json()
+        city_name = City.objects.get(id=kwargs["pk"])
+        context["city"] = city_name
 
         all_history = []
-
         for i in range(0, 21):
             history_info = {
                 'time': datetime.utcfromtimestamp(res["hourly"][i]["dt"]).strftime('%Y-%m-%d %H:%M '),
