@@ -7,7 +7,7 @@
                 {% for city in cur_city %}
                     <div class="alert alert-info">
                         <div class="row">
-                            <div class="col-9">
+                            <div class="col-12">
                                 <h4 class="alert-heading">Расположение</h4>
                                 <b>Город:</b> {{ city.name }} <br>
                                 <b>Страна:</b> {{ city.information.country }} <br>
@@ -17,7 +17,16 @@
                                 <b>Восход:</b> {{ city.information.sunrise }} <br>
                                 <b>Закат:</b> {{ city.information.sunset }} <br>
                                 <hr>
-                                <h4 class="alert-heading">Погода</h4>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h4 class="alert-heading">Погода</h4>
+                                    </div>
+                                    <div class="col-md-2 offset-md-6">
+                                        <img src="http://openweathermap.org/img/w/{{ city.information.icon }}.png"
+                                             alt="wIcon"
+                                             class="img-thumbnail">
+                                    </div>
+                                </div>
                                 <b>Температура:</b> {{ city.information.temperature }} <sup>o</sup> <br>
                                 <b>Чувствуется как:</b> {{ city.information.feels_like }} <sup>o</sup> <br>
                                 <b>Минимальная температура:</b> {{ city.information.temp_min }} <sup>o</sup> <br>
@@ -26,9 +35,15 @@
                                 <b>Давление:</b> {{ city.information.pressure }} hPa <br>
                                 <b>Влажность:</b> {{ city.information.humidity }} % <br>
                                 <b>Скорость ветра:</b> {{ city.information.speed }} m/s <br>
-
-                                {#                        <img src="http://openweathermap.org/img/w/{{ city.information.icon }}.png" alt="wIcon"#}
-                                {#                             class="img-thumbnail">#}
+                                <hr>
+                                <h4 class="alert-heading">Действия</h4>
+                                <br>
+                                <form action="{% url 'delete_city' city.id %}"
+                                      method="post">
+                                    {% csrf_token %}
+                                    <input type="submit" name="" value="Удалить"
+                                           class="mt-2 btn btn-secondary">
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -43,19 +58,64 @@
                                     продолжить</p>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-md-3">
-                                        <form action="{% url 'history_city' city.information.city_id %}"
+                                    <div class="col-md-1">
+                                        <form action="{% url 'history_city' city.information.city_id 86400 %}"
                                               method="get">
-                                            {{ formHistory.name }}
                                             <input type="submit" name="" value="24 часа"
                                                    class="mt-2 btn btn-danger">
                                         </form>
                                     </div>
-                                    <div class="col-md-1 ">
-                                        <form action="{% url 'history_city' city.information.city_id %}"
+                                    <div class="col-md-1 offset-md-2">
+                                        <form action="{% url 'history_city' city.information.city_id 172800 %}"
                                               method="get">
-                                            {{ formHistory.name }}
+                                            <input type="submit" name="" value="2 дня"
+                                                   class="mt-2 btn btn-danger">
+                                        </form>
+                                    </div>
+                                    <div class="col-md-1 offset-md-2 ">
+                                        <form action="{% url 'history_city' city.information.city_id 259200 %}"
+                                              method="get">
+                                            <input type="submit" name="" value="3 дня"
+                                                   class="mt-2 btn btn-danger">
+                                        </form>
+                                    </div>
+                                    <div class="col-md-1 offset-md-2 ">
+                                        <form action="{% url 'history_city' city.information.city_id 345600 %}"
+                                              method="get">
+                                            <input type="submit" name="" value="4 дня"
+                                                   class="mt-2 btn btn-danger">
+                                        </form>
+                                    </div>
+                                </div>
+                                <br>
+                                <p class="mb-0">Информация предоставлена <a href="https://openweathermap.org/">OpenWeather</a>.
+                                </p>
+                            </div>
+                            <div class="alert alert-secondary">
+                                <h4 class="alert-heading">Прогноз</h4>
+                                <p>Вы можете посмотреть прогноз температуры в удобном виде. <br> Нажмите на кнопку ниже
+                                    чтобы
+                                    продолжить</p>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <form action="{% url 'forecast_city' city.information.city_id 24 "hourly" %}"
+                                              method="get">
+                                            <input type="submit" name="" value="24 часа"
+                                                   class="mt-2 btn btn-danger">
+                                        </form>
+                                    </div>
+                                    <div class="col-md-1 offset-md-2">
+                                        <form action="{% url 'forecast_city' city.information.city_id 48 "hourly" %}"
+                                              method="get">
                                             <input type="submit" name="" value="48 часов"
+                                                   class="mt-2 btn btn-danger">
+                                        </form>
+                                    </div>
+                                    <div class="col-md-1 offset-md-2 ">
+                                        <form action="{% url 'forecast_city' city.information.city_id 7 "daily" %}"
+                                              method="get">
+                                            <input type="submit" name="" value="7 дней"
                                                    class="mt-2 btn btn-danger">
                                         </form>
                                     </div>
