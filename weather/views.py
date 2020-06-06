@@ -67,10 +67,10 @@ class AddCityView(BaseView):
                 'humidity': res["main"]["humidity"],
                 'visibility': res["visibility"],
                 'speed': res["wind"]["speed"],
-                'time': datetime.utcfromtimestamp(res["dt"]).strftime('%H:%M:%S %Y-%m-%d '),
+                'time': datetime.utcfromtimestamp(res["dt"] + res["timezone"]).strftime('%H:%M:%S %Y-%m-%d '),
                 'country': res["sys"]["country"],
-                'sunrise': datetime.utcfromtimestamp(res["sys"]["sunrise"]).strftime('%H:%M:%S'),
-                'sunset': datetime.utcfromtimestamp(res["sys"]["sunset"]).strftime('%H:%M:%S'),
+                'sunrise': datetime.utcfromtimestamp(res["sys"]["sunrise"] + res["timezone"]).strftime('%H:%M:%S'),
+                'sunset': datetime.utcfromtimestamp(res["sys"]["sunset"] + res["timezone"]).strftime('%H:%M:%S'),
                 'city': city.name
             }
 
@@ -134,10 +134,10 @@ class UpdateInformationView(BaseView):
                 'humidity': res["main"]["humidity"],
                 'visibility': res["visibility"],
                 'speed': res["wind"]["speed"],
-                'time': datetime.utcfromtimestamp(res["dt"]).strftime('%H:%M:%S %Y-%m-%d '),
+                'time': datetime.utcfromtimestamp(res["dt"] + res["timezone"]).strftime('%H:%M:%S %Y-%m-%d '),
                 'country': res["sys"]["country"],
-                'sunrise': datetime.utcfromtimestamp(res["sys"]["sunrise"]).strftime('%H:%M:%S'),
-                'sunset': datetime.utcfromtimestamp(res["sys"]["sunset"]).strftime('%H:%M:%S'),
+                'sunrise': datetime.utcfromtimestamp(res["sys"]["sunrise"] + res["timezone"]).strftime('%H:%M:%S'),
+                'sunset': datetime.utcfromtimestamp(res["sys"]["sunset"] + res["timezone"]).strftime('%H:%M:%S'),
                 'city': city.name,
             }
             print("API RESPONSE:", city_info)
@@ -180,16 +180,17 @@ class CityTemperatureHistory(BaseView):
 
         lat = Information.objects.get(city_id=kwargs["pk"]).coord_lat
         lon = Information.objects.get(city_id=kwargs["pk"]).coord_lon
-        # Current unix time
-        dt = int(time.time())
+        # Current unix time - 1 day
+        dt = int(time.time()) + 360 - 86400
         res = requests.get(url.format(lat, lon, dt)).json()
         city_name = City.objects.get(id=kwargs["pk"])
         context["city"] = city_name
 
         all_history = []
-        for i in range(0, 21):
+        for i in range(0, 24):
             history_info = {
-                'time': datetime.utcfromtimestamp(res["hourly"][i]["dt"]).strftime('%Y-%m-%d %H:%M '),
+                'time': datetime.utcfromtimestamp(res["hourly"][i]["dt"] +
+                                                  res["timezone_offset"]).strftime('%Y-%m-%d %H:%M '),
                 'temp': res["hourly"][i]["temp"],
             }
             all_history.append(history_info)
