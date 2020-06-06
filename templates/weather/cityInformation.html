@@ -94,7 +94,7 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-1">
-                                        <form action="{% url 'history_city' city.information.city_id 86400 %}"
+                                        <form action="{% url 'forecast_city' city.information.city_id 24 "hourly" %}"
                                               method="get">
                                             {{ formHistory.name }}
                                             <input type="submit" name="" value="24 часа"
@@ -102,7 +102,7 @@
                                         </form>
                                     </div>
                                     <div class="col-md-1 offset-md-2">
-                                        <form action="{% url 'history_city' city.information.city_id 172800 %}"
+                                        <form action="{% url 'forecast_city' city.information.city_id 48 "hourly" %}"
                                               method="get">
                                             {{ formHistory.name }}
                                             <input type="submit" name="" value="48 часов"
@@ -110,18 +110,10 @@
                                         </form>
                                     </div>
                                     <div class="col-md-1 offset-md-2 ">
-                                        <form action="{% url 'history_city' city.information.city_id 259200 %}"
+                                        <form action="{% url 'forecast_city' city.information.city_id 7 "daily" %}"
                                               method="get">
                                             {{ formHistory.name }}
-                                            <input type="submit" name="" value="72 часа"
-                                                   class="mt-2 btn btn-danger">
-                                        </form>
-                                    </div>
-                                    <div class="col-md-1 offset-md-2 ">
-                                        <form action="{% url 'history_city' city.information.city_id 345600 %}"
-                                              method="get">
-                                            {{ formHistory.name }}
-                                            <input type="submit" name="" value="96 часов"
+                                            <input type="submit" name="" value="7 дней"
                                                    class="mt-2 btn btn-danger">
                                         </form>
                                     </div>

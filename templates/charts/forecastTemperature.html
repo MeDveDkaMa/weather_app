@@ -1,0 +1,56 @@
+{% extends 'charts/base.html' %}
+
+{% block title %}History of temperature{% endblock title %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            var ctx = document.getElementById("myChart").getContext("2d");
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'temp of {{ city.name }}',
+                        data: [
+                            {% for item in history_context %}
+                                {
+                                    t: new Date("{{item.time}}"),
+                                    y: {{item.temp}}
+                                },
+                            {% endfor %}
+                        ],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgb(208,80,108)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            type: 'time'
+                        }]
+                    }
+                }
+            })
+        });
+    </script>
+{% endblock scripts %}
+
+{% block content %}
+    <canvas id="myChart" width="400" height="100"></canvas>
+{% endblock content %}
