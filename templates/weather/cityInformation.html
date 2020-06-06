@@ -1,31 +1,72 @@
 {% extends 'weather/base.html' %}
 {% block content %}
-    <div class="col-5 offset-1">
-        <h1>Информация</h1>
-        {% for city in cur_city %}
-            <div class="alert alert-info">
-                <div class="row">
-                    <div class="col-9">
-                        <b>Город:</b> {{ city.name }} <br>
-                        <b>Страна:</b> {{ city.information.country }} <br>
-                        <b>Время:</b> {{ city.information.time }} <br>
-                        <b>Долгота:</b> {{ city.information.coord_lon }} <br>
-                        <b>Широта:</b> {{ city.information.coord_lat }} <br>
-                        <b>Температура:</b> {{ city.information.temperature }} <sup>o</sup> <br>
-                        <b>Чувствуется как:</b> {{ city.information.feels_like }} <sup>o</sup> <br>
-                        <b>Минимальная температура:</b> {{ city.information.temp_min }} <sup>o</sup> <br>
-                        <b>Максимальная температура:</b> {{ city.information.temp_max }} <sup>o</sup> <br>
-                        <b>Облачность:</b> {{ city.information.sky }}<br>
-                        <b>Давление:</b> {{ city.information.pressure }} hPa <br>
-                        <b>Влажность:</b> {{ city.information.humidity }} % <br>
-                        <b>Скорость ветра:</b> {{ city.information.speed }} m/s <br>
-                        <b>Восход:</b> {{ city.information.sunrise }} <br>
-                        <b>Закат:</b> {{ city.information.sunset }} <br>
-                        <img src="http://openweathermap.org/img/w/{{ city.information.icon }}.png" alt="wIcon"
-                             class="img-thumbnail">
+    <div class="container">
+        <div class="row">
+            <div class="col-5 ">
+                <h1>Информация</h1>
+                {% for city in cur_city %}
+                    <div class="alert alert-info">
+                        <div class="row">
+                            <div class="col-9">
+                                <h4 class="alert-heading">Расположение</h4>
+                                <b>Город:</b> {{ city.name }} <br>
+                                <b>Страна:</b> {{ city.information.country }} <br>
+                                <b>Время:</b> {{ city.information.time }} <br>
+                                <b>Долгота:</b> {{ city.information.coord_lon }} <br>
+                                <b>Широта:</b> {{ city.information.coord_lat }} <br>
+                                <b>Восход:</b> {{ city.information.sunrise }} <br>
+                                <b>Закат:</b> {{ city.information.sunset }} <br>
+                                <hr>
+                                <h4 class="alert-heading">Погода</h4>
+                                <b>Температура:</b> {{ city.information.temperature }} <sup>o</sup> <br>
+                                <b>Чувствуется как:</b> {{ city.information.feels_like }} <sup>o</sup> <br>
+                                <b>Минимальная температура:</b> {{ city.information.temp_min }} <sup>o</sup> <br>
+                                <b>Максимальная температура:</b> {{ city.information.temp_max }} <sup>o</sup> <br>
+                                <b>Облачность:</b> {{ city.information.sky }}<br>
+                                <b>Давление:</b> {{ city.information.pressure }} hPa <br>
+                                <b>Влажность:</b> {{ city.information.humidity }} % <br>
+                                <b>Скорость ветра:</b> {{ city.information.speed }} m/s <br>
+
+                                {#                        <img src="http://openweathermap.org/img/w/{{ city.information.icon }}.png" alt="wIcon"#}
+                                {#                             class="img-thumbnail">#}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        {% endfor %}
+                    </div>
+                    <div class="col-5 offset-2 ">
+                        <div class="row">
+                            <h1>Графики</h1>
+                            <div class="alert alert-success">
+                                <h4 class="alert-heading">История</h4>
+                                <p>Вы можете посмотреть историю температуры в удобном виде. <br> Нажмите на кнопку ниже
+                                    чтобы
+                                    продолжить</p>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <form action="{% url 'history_city' city.information.city_id %}"
+                                              method="get">
+                                            {{ formHistory.name }}
+                                            <input type="submit" name="" value="24 часа"
+                                                   class="mt-2 btn btn-danger">
+                                        </form>
+                                    </div>
+                                    <div class="col-md-1 ">
+                                        <form action="{% url 'history_city' city.information.city_id %}"
+                                              method="get">
+                                            {{ formHistory.name }}
+                                            <input type="submit" name="" value="48 часов"
+                                                   class="mt-2 btn btn-danger">
+                                        </form>
+                                    </div>
+                                </div>
+                                <br>
+                                <p class="mb-0">Информация предоставлена <a href="https://openweathermap.org/">OpenWeather</a>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+        </div>
     </div>
 {% endblock content %}

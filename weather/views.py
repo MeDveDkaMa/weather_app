@@ -181,7 +181,7 @@ class CityTemperatureHistory(BaseView):
         lat = Information.objects.get(city_id=kwargs["pk"]).coord_lat
         lon = Information.objects.get(city_id=kwargs["pk"]).coord_lon
         # Current unix time - 1 day
-        dt = int(time.time())-86400
+        dt = int(time.time()) + 360 - 86400
         res = requests.get(url.format(lat, lon, dt)).json()
         city_name = City.objects.get(id=kwargs["pk"])
         context["city"] = city_name
