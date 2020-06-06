@@ -1,6 +1,6 @@
 {% extends 'charts/base.html' %}
 
-{% block title %}History of temperature{% endblock title %}
+{% block title %}Forecast of temperature {{ city.name }}{% endblock title %}
 
 {% block scripts %}
     <script>
@@ -11,17 +11,20 @@
                 data: {
                     labels: [],
                     datasets: [{
+                        pointRadius: 4,
+                        fill: 'false',
                         label: 'temp of {{ city.name }}',
+                        pointStyle: "circle",
                         data: [
-                            {% for item in history_context %}
+                            {% for item in forecast_context %}
                                 {
                                     t: new Date("{{item.time}}"),
-                                    y: {{item.temp}}
+                                    y: {{item.info.temp}}
                                 },
                             {% endfor %}
                         ],
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(11, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
                             'rgba(255, 206, 86, 0.2)',
                             'rgba(75, 192, 192, 0.2)',
@@ -29,28 +32,113 @@
                             'rgba(255, 159, 64, 0.2)'
                         ],
                         borderColor: [
-                            'rgb(208,80,108)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
+                            {#Цвет линии#}
                             'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
                         ],
-                        borderWidth: 1
-                    }]
+                        pointBackgroundColor: [
+                            {% for item in forecast_context %}
+                                'rgb(206,12,12)',
+                            {% endfor %}
+                        ],
+                        borderWidth: 3
+                    },
+                        {
+                            pointRadius: 4,
+                            fill: 'false',
+                            label: 'feels like',
+                            pointStyle: "circle",
+                            data: [
+                                {% for item in forecast_context %}
+                                    {
+                                        t: new Date("{{item.time}}"),
+                                        y: {{item.info.feels_like}}
+                                    },
+                                {% endfor %}
+                            ],
+                            backgroundColor: [
+                                'rgba(11, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                {#Цвет линии#}
+                                'rgb(40,196,92)',
+                            ],
+                            pointBackgroundColor: [
+                                {% for item in forecast_context %}
+                                    'rgb(23,31,179)',
+                                {% endfor %}
+                            ],
+                            borderWidth: 3
+                        }
+                    ]
                 },
                 options: {
                     scales: {
                         xAxes: [{
-                            type: 'time'
+                            type: 'time',
+                            stacked: false
                         }]
                     }
                 }
             })
         });
     </script>
+
+    {#    <script>#}
+    {#        $(document).ready(function () {#}
+    {#            var ctx = document.getElementById("myChart2").getContext("2d");#}
+    {#            var myChart2 = new Chart(ctx, {#}
+    {#                type: 'pie',#}
+    {#                data: {#}
+    {#                    labels: [#}
+    {#                        {% for item in forecast_context %}#}
+    {#                            "{{ item.time }}",#}
+    {#                        {% endfor %}#}
+    {##}
+    {#                    ],#}
+    {#                    datasets: [{#}
+    {#                        pointRadius: 1,#}
+    {#                        fill: 'start',#}
+    {#                        label: 'temp of {{ city.name }}',#}
+    {#                        data: [#}
+    {#                            {% for item in forecast_context %}#}
+    {#                                {{ item.info.temp }},#}
+    {#                            {% endfor %}#}
+    {#                        ],#}
+    {#                        backgroundColor: [#}
+    {#                            {% for item in forecast_context %}#}
+    {#                                'rgba(15,151,241,0.2)',#}
+    {#                            {% endfor %}#}
+    {##}
+    {#'rgba(54, 162, 235, 0.2)',#}
+    {#'rgba(255, 206, 86, 0.2)',#}
+    {#'rgba(75, 192, 192, 0.2)',#}
+    {#'rgba(153, 102, 255, 0.2)',#}
+    {#'rgba(255, 159, 64, 0.2)'#}
+    {#                        ],#}
+    {#                        borderColor: [#}
+    {#Цвет линии#}
+    {#                            'rgba(75, 192, 192, 1)',#}
+    {#                        ],#}
+    {#                        pointBackgroundColor: [#}
+    {#                            {% for item in forecast_context %}#}
+    {#                                'rgb(206,12,12)',#}
+    {#                            {% endfor %}#}
+    {#                        ],#}
+    {#                        borderWidth: 5#}
+    {#                    }]#}
+    {#                },#}
+    {#            })#}
+    {#        });#}
+    {#    </script>#}
+
 {% endblock scripts %}
 
 {% block content %}
-    <canvas id="myChart" width="400" height="100"></canvas>
+    <canvas id="myChart" width="500" height="150"></canvas>
+    <canvas id="myChart2" width="400" height="120"></canvas>
 {% endblock content %}

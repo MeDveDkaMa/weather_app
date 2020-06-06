@@ -176,7 +176,7 @@ class CityTemperatureHistoryView(BaseView):
         context = super().get_context_data(**kwargs)
 
         token = 'ca8ee28f8bf42eb6948dba8bcc7aa661'
-        url = 'http://api.openweathermap.org/data/2.5/onecall/timemachine?lat={}&lon={}&dt={}&units=metric&appid=' + token
+        url = 'http://api.openweathermap.org/data/2.5/onecall/timemachine?lat={}&lon={}&dt={}&units=metric&lang=ru&appid=' + token
 
         lat = Information.objects.get(city_id=kwargs["pk"]).coord_lat
         lon = Information.objects.get(city_id=kwargs["pk"]).coord_lon
@@ -209,38 +209,24 @@ class CityForecastView(BaseView):
         context = super().get_context_data(**kwargs)
 
         token = 'ca8ee28f8bf42eb6948dba8bcc7aa661'
-        url = 'https://api.openweathermap.org/data/2.5/onecall?lat={}&lon={}&exclude={}&units=metric&appid=' + token
+        url = 'https://api.openweathermap.org/data/2.5/onecall?lat={}&lon={}&exclude={}&lang=ru&units=metric&appid=' + token
 
         lat = Information.objects.get(city_id=kwargs["pk"]).coord_lat
         lon = Information.objects.get(city_id=kwargs["pk"]).coord_lon
-        # type = kwargs["type"]
         type = "current"
+
         res = requests.get(url.format(lat, lon, type)).json()
-        # print("API RESPONSE: ", res)
 
         city_name = City.objects.get(id=kwargs["pk"])
         context["city"] = city_name
 
         all_forecast = []
 
-        # if kwargs["type"] == 7:
-        #     print(kwargs["type"])
-        #     for i in range(0, kwargs["type"]):
-        #         forecast_info = {
-        #             'time': datetime.utcfromtimestamp(res["daily"][i]["dt"] +
-        #                                               res["timezone_offset"]).strftime('%Y-%m-%d %H:%M '),
-        #             'temp': res["hourly"][i]["temp"],
-        #         }
-        #         all_forecast.append(forecast_info)
-        #
-        #     context["forecast_context"] = all_forecast
-        #     return context
-
         for i in range(0, kwargs["count"]):
             forecast_info = {
                 'time': datetime.utcfromtimestamp(res[kwargs["type"]][i]["dt"] +
-                                                  res["timezone_offset"]).strftime('%Y-%m-%d %H:%M '),
-                'temp': res[kwargs["type"]][i]["temp"],
+                                                  res["timezone_offset"]).strftime('%m-%d %H:%M '),
+                'info': res[kwargs["type"]][i],
             }
             all_forecast.append(forecast_info)
 

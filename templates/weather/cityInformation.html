@@ -35,6 +35,15 @@
                                 <b>Давление:</b> {{ city.information.pressure }} hPa <br>
                                 <b>Влажность:</b> {{ city.information.humidity }} % <br>
                                 <b>Скорость ветра:</b> {{ city.information.speed }} m/s <br>
+                                <hr>
+                                <h4 class="alert-heading">Действия</h4>
+                                <br>
+                                <form action="{% url 'history_city' city.information.city_id 172800 %}"
+                                      method="get">
+                                    {{ formHistory.name }}
+                                    <input type="submit" name="" value="Удалить"
+                                           class="mt-2 btn btn-secondary">
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -61,7 +70,7 @@
                                         <form action="{% url 'history_city' city.information.city_id 172800 %}"
                                               method="get">
                                             {{ formHistory.name }}
-                                            <input type="submit" name="" value="48 часов"
+                                            <input type="submit" name="" value="2 дня"
                                                    class="mt-2 btn btn-danger">
                                         </form>
                                     </div>
@@ -69,7 +78,7 @@
                                         <form action="{% url 'history_city' city.information.city_id 259200 %}"
                                               method="get">
                                             {{ formHistory.name }}
-                                            <input type="submit" name="" value="72 часа"
+                                            <input type="submit" name="" value="3 дня"
                                                    class="mt-2 btn btn-danger">
                                         </form>
                                     </div>
@@ -77,7 +86,7 @@
                                         <form action="{% url 'history_city' city.information.city_id 345600 %}"
                                               method="get">
                                             {{ formHistory.name }}
-                                            <input type="submit" name="" value="96 часов"
+                                            <input type="submit" name="" value="4 дня"
                                                    class="mt-2 btn btn-danger">
                                         </form>
                                     </div>
