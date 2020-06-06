@@ -161,6 +161,18 @@ class UpdateInformationView(BaseView):
         return redirect("/")
 
 
+class DeleteCityView(BaseView):
+    template_name = 'weather/cityInformation.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        City.objects.get(id=kwargs["pk"]).delete()
+        return redirect("/")
+
+
 class AllCityTemperatureView(BaseView):
     template_name = 'charts/allTemperature.html'
 

@@ -8,6 +8,7 @@ urlpatterns = [
     path('api/history/<int:pk>/time/<int:time>/', views.CityTemperatureHistoryView.as_view(), name="history_city"),
     path('api/info/update/', views.UpdateInformationView.as_view(), name="update_info"),
     path('api/info/temperature/all', views.AllCityTemperatureView.as_view(), name="all_temperature_info"),
+    path('api/api/delete/<int:pk>/', views.DeleteCityView.as_view(), name="delete_city"),
     path('api/forecast/<int:pk>/time/<int:count>/type/<slug:type>/', views.CityForecastView.as_view(),
          name="forecast_city"),
 ]
