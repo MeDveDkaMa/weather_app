@@ -1,8 +1,8 @@
 from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views.generic import TemplateView
-from .models import City, Information, History
-from .forms import AddCityForm, AddInformationForm
+from .models import City, Information
+from .forms import AddCityForm
 from datetime import datetime
 import requests
 import time
@@ -39,15 +39,14 @@ class AddCityView(BaseView):
         context = super().get_context_data(**kwargs)
         form = AddCityForm(request.POST)
         if form.is_valid():
-            form.save()
+            form.save(commit=False)
+        else:
+            redirect("/")
 
         info_form_data = form.cleaned_data
-        context["c_info"] = info_form_data
 
         try:
-            info_city = City.objects.get(name=info_form_data["name"])
-            context["cur_info"] = info_city
-            print("Найдено")
+            info_city = City.objects.create(name=info_form_data["name"])
         except:
             raise Http404
 
