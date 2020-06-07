@@ -65,7 +65,6 @@ class AddCityView(BaseView):
                 'temp_max': res["main"]["temp_max"],
                 'pressure': res["main"]["pressure"],
                 'humidity': res["main"]["humidity"],
-                'visibility': res["visibility"],
                 'speed': res["wind"]["speed"],
                 'time': datetime.utcfromtimestamp(time.time() + res["timezone"]).strftime('%H:%M:%S %Y-%m-%d '),
                 'country': res["sys"]["country"],
@@ -85,7 +84,6 @@ class AddCityView(BaseView):
             Information.objects.filter(city_id=info_city.id).update(temp_max=city_info['temp_max'])
             Information.objects.filter(city_id=info_city.id).update(pressure=city_info['pressure'])
             Information.objects.filter(city_id=info_city.id).update(humidity=city_info['humidity'])
-            Information.objects.filter(city_id=info_city.id).update(visibility=city_info['visibility'])
             Information.objects.filter(city_id=info_city.id).update(speed=city_info['speed'])
             Information.objects.filter(city_id=info_city.id).update(time=city_info['time'])
             Information.objects.filter(city_id=info_city.id).update(country=city_info['country'])
@@ -132,7 +130,6 @@ class UpdateInformationView(BaseView):
                 'temp_max': res["main"]["temp_max"],
                 'pressure': res["main"]["pressure"],
                 'humidity': res["main"]["humidity"],
-                'visibility': res["visibility"],
                 'speed': res["wind"]["speed"],
                 'time': datetime.utcfromtimestamp(time.time() + res["timezone"]).strftime('%H:%M:%S %Y-%m-%d '),
                 'country': res["sys"]["country"],
@@ -152,7 +149,6 @@ class UpdateInformationView(BaseView):
             Information.objects.filter(city_id=city.id).update(temp_max=city_info['temp_max'])
             Information.objects.filter(city_id=city.id).update(pressure=city_info['pressure'])
             Information.objects.filter(city_id=city.id).update(humidity=city_info['humidity'])
-            Information.objects.filter(city_id=city.id).update(visibility=city_info['visibility'])
             Information.objects.filter(city_id=city.id).update(speed=city_info['speed'])
             Information.objects.filter(city_id=city.id).update(time=city_info['time'])
             Information.objects.filter(city_id=city.id).update(country=city_info['country'])
