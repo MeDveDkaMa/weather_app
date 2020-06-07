@@ -53,6 +53,12 @@ class AddCityView(BaseView):
         cities = City.objects.all()
         for city in cities:
             res = requests.get(url.format(city.name)).json()
+            if res["cod"] == "404":
+                City.objects.get(name=info_form_data["name"]).delete()
+                redirect("current_temp")
+                break
+
+            print("API RESPONSE:", res)
             city_info = {
                 'coord_lon': res["coord"]["lon"],
                 'coord_lat': res["coord"]["lat"],
