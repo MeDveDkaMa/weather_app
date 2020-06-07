@@ -1,8 +1,8 @@
 from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views.generic import TemplateView
-from .models import City, Information, History
-from .forms import AddCityForm, AddInformationForm
+from .models import City, Information
+from .forms import AddCityForm
 from datetime import datetime
 import requests
 import time
@@ -39,15 +39,14 @@ class AddCityView(BaseView):
         context = super().get_context_data(**kwargs)
         form = AddCityForm(request.POST)
         if form.is_valid():
-            form.save()
+            form.save(commit=False)
+        else:
+            redirect("/")
 
         info_form_data = form.cleaned_data
-        context["c_info"] = info_form_data
 
         try:
-            info_city = City.objects.get(name=info_form_data["name"])
-            context["cur_info"] = info_city
-            print("Найдено")
+            info_city = City.objects.create(name=info_form_data["name"])
         except:
             raise Http404
 
@@ -65,7 +64,6 @@ class AddCityView(BaseView):
                 'temp_max': res["main"]["temp_max"],
                 'pressure': res["main"]["pressure"],
                 'humidity': res["main"]["humidity"],
-                'visibility': res["visibility"],
                 'speed': res["wind"]["speed"],
                 'time': datetime.utcfromtimestamp(time.time() + res["timezone"]).strftime('%H:%M:%S %Y-%m-%d '),
                 'country': res["sys"]["country"],
@@ -85,7 +83,6 @@ class AddCityView(BaseView):
             Information.objects.filter(city_id=info_city.id).update(temp_max=city_info['temp_max'])
             Information.objects.filter(city_id=info_city.id).update(pressure=city_info['pressure'])
             Information.objects.filter(city_id=info_city.id).update(humidity=city_info['humidity'])
-            Information.objects.filter(city_id=info_city.id).update(visibility=city_info['visibility'])
             Information.objects.filter(city_id=info_city.id).update(speed=city_info['speed'])
             Information.objects.filter(city_id=info_city.id).update(time=city_info['time'])
             Information.objects.filter(city_id=info_city.id).update(country=city_info['country'])
@@ -93,9 +90,6 @@ class AddCityView(BaseView):
             Information.objects.filter(city_id=info_city.id).update(sunset=city_info['sunset'])
 
         return redirect("/")
-        # return self.render_to_response(context)
-
-        # return redirect("information_city" + "/" + info_city.id.__str__())
 
 
 class InformationCityView(BaseView):
@@ -132,7 +126,6 @@ class UpdateInformationView(BaseView):
                 'temp_max': res["main"]["temp_max"],
                 'pressure': res["main"]["pressure"],
                 'humidity': res["main"]["humidity"],
-                'visibility': res["visibility"],
                 'speed': res["wind"]["speed"],
                 'time': datetime.utcfromtimestamp(time.time() + res["timezone"]).strftime('%H:%M:%S %Y-%m-%d '),
                 'country': res["sys"]["country"],
@@ -152,7 +145,6 @@ class UpdateInformationView(BaseView):
             Information.objects.filter(city_id=city.id).update(temp_max=city_info['temp_max'])
             Information.objects.filter(city_id=city.id).update(pressure=city_info['pressure'])
             Information.objects.filter(city_id=city.id).update(humidity=city_info['humidity'])
-            Information.objects.filter(city_id=city.id).update(visibility=city_info['visibility'])
             Information.objects.filter(city_id=city.id).update(speed=city_info['speed'])
             Information.objects.filter(city_id=city.id).update(time=city_info['time'])
             Information.objects.filter(city_id=city.id).update(country=city_info['country'])
