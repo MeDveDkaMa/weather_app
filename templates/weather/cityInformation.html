@@ -36,14 +36,6 @@
                                 <b>Влажность:</b> {{ city.information.humidity }} % <br>
                                 <b>Скорость ветра:</b> {{ city.information.speed }} m/s <br>
                                 <hr>
-                                <h4 class="alert-heading">Действия</h4>
-                                <br>
-                                <form action="{% url 'delete_city' city.id %}"
-                                      method="post">
-                                    {% csrf_token %}
-                                    <input type="submit" name="" value="Удалить"
-                                           class="mt-2 btn btn-secondary">
-                                </form>
                             </div>
                         </div>
                     </div>
