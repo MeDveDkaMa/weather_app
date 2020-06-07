@@ -1,6 +1,6 @@
 #!/bin/bash
 pwd
-python3.7 -m virtualenv env
+python3 -m virtualenv env
 source env/bin/activate
 pip install -r requirements.txt
 python3 manage.py makemigrations
