@@ -2,7 +2,7 @@ from django.db import models
 
 
 class City(models.Model):
-    name = models.CharField("Имя", max_length=10)
+    name = models.CharField("Имя", max_length=30)
 
     def __str__(self):
         return self.name
