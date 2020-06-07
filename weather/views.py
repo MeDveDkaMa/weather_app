@@ -90,9 +90,6 @@ class AddCityView(BaseView):
             Information.objects.filter(city_id=info_city.id).update(sunset=city_info['sunset'])
 
         return redirect("/")
-        # return self.render_to_response(context)
-
-        # return redirect("information_city" + "/" + info_city.id.__str__())
 
 
 class InformationCityView(BaseView):

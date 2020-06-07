@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import TextInput
 
-from .models import City, Information
+from .models import City
 
 
 class AddCityForm(forms.ModelForm):
@@ -12,9 +12,3 @@ class AddCityForm(forms.ModelForm):
                                             'placeholder': 'Введите город',
                                             'style': 'width:300px'
                                             })}
-
-
-class AddInformationForm(forms.ModelForm):
-    class Meta:
-        model = Information
-        fields = {"temperature", "coord_lat", "coord_lon", "sky"}

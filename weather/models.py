@@ -19,23 +19,9 @@ class Information(models.Model):
     humidity = models.CharField("Влажность", max_length=5, null=True)
     temp_min = models.CharField("Минимальная температура", max_length=5, null=True)
     temp_max = models.CharField("Максимальная температура", max_length=5, null=True)
-    visibility = models.CharField("Видимость", max_length=5, null=True)
     speed = models.CharField("Скорость ветра", max_length=5, null=True)
     country = models.CharField("Страна", max_length=5, null=True)
     feels_like = models.CharField("Чувствуется как", max_length=5, null=True)
     time = models.CharField("Время", max_length=5, null=True)
     sunrise = models.CharField("Восход", max_length=5, null=True)
     sunset = models.CharField("Закат", max_length=5, null=True)
-
-
-class Forecast(models.Model):
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
-    temperature = models.CharField("Температура", max_length=5)
-    time = models.CharField("Время", max_length=15)
-
-
-class History(models.Model):
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
-    temperature = models.CharField("Температура", max_length=5)
-    time = models.CharField("Время", max_length=15)
-# Create your models here.
