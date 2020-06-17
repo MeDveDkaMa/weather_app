@@ -129,7 +129,38 @@
                             ],
                             borderWidth: 3
                         },
-
+                            {
+                                pointRadius: 4,
+                                fill: 'false',
+                                label: 'feels like',
+                                pointStyle: "circle",
+                                data: [
+                                    {% for item in forecast_context %}
+                                        {
+                                            t: new Date("{{item.time}}"),
+                                            y: {{item.info.feels_like.day}}
+                                        },
+                                    {% endfor %}
+                                ],
+                                backgroundColor: [
+                                    'rgba(11, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(153, 102, 255, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ],
+                                borderColor: [
+                                    {#Цвет линии#}
+                                    'rgb(40,196,92)',
+                                ],
+                                pointBackgroundColor: [
+                                    {% for item in forecast_context %}
+                                        'rgb(23,31,179)',
+                                    {% endfor %}
+                                ],
+                                borderWidth: 3
+                            }
                         ]
                     },
                     options: {
@@ -143,56 +174,53 @@
                 })
             });
         </script>
+        <script>
+            $(document).ready(function () {
+                var ctx = document.getElementById("myChart2").getContext("2d");
+                var myChart2 = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: [
+                            {% for item in forecast_context %}
+                                "{{ item.info.weather.0.main }}",
+                            {% endfor %}
+
+                        ],
+                        datasets: [{
+                            pointRadius: 1,
+                            fill: 'start',
+                            label: 'temp of {{ city.name }}',
+                            data: [
+                                {% for item in forecast_context %}
+                                    {{ item.info.temp.day }},
+                                {% endfor %}
+                            ],
+                            backgroundColor: [
+                                {% for item in forecast_context %}
+                                    'rgba(15,151,241,0.2)',
+                                {% endfor %}
+
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(75, 192, 192, 1)',
+                            ],
+                            pointBackgroundColor: [
+                                {% for item in forecast_context %}
+                                    'rgb(206,12,12)',
+                                {% endfor %}
+                            ],
+                            borderWidth: 5
+                        }]
+                    },
+                })
+            });
+        </script>
     {% endif %}
-
-
-
-    {#        <script>#}
-    {#            $(document).ready(function () {#}
-    {#                var ctx = document.getElementById("myChart2").getContext("2d");#}
-    {#                var myChart2 = new Chart(ctx, {#}
-    {#                    type: 'pie',#}
-    {#                    data: {#}
-    {#                        labels: [#}
-    {#                            {% for item in forecast_context %}#}
-    {#                                "{{ item.time }}",#}
-    {#                            {% endfor %}#}
-    {##}
-    {#                        ],#}
-    {#                        datasets: [{#}
-    {#                            pointRadius: 1,#}
-    {#                            fill: 'start',#}
-    {#                            label: 'temp of {{ city.name }}',#}
-    {#                            data: [#}
-    {#                                {% for item in forecast_context %}#}
-    {#                                    {{ item.info.temp }},#}
-    {#                                {% endfor %}#}
-    {#                            ],#}
-    {#                            backgroundColor: [#}
-    {#                                {% for item in forecast_context %}#}
-    {#                                    'rgba(15,151,241,0.2)',#}
-    {#                                {% endfor %}#}
-    {##}
-    {#                                'rgba(54, 162, 235, 0.2)',#}
-    {#                                'rgba(255, 206, 86, 0.2)',#}
-    {#                                'rgba(75, 192, 192, 0.2)',#}
-    {#                                'rgba(153, 102, 255, 0.2)',#}
-    {#                                'rgba(255, 159, 64, 0.2)'#}
-    {#                            ],#}
-    {#                            borderColor: [#}
-    {#                                'rgba(75, 192, 192, 1)',#}
-    {#                            ],#}
-    {#                            pointBackgroundColor: [#}
-    {#                                {% for item in forecast_context %}#}
-    {#                                    'rgb(206,12,12)',#}
-    {#                                {% endfor %}#}
-    {#                            ],#}
-    {#                            borderWidth: 5#}
-    {#                        }]#}
-    {#                    },#}
-    {#                })#}
-    {#            });#}
-    {#        </script>#}
 
 {% endblock scripts %}
 
@@ -202,8 +230,6 @@
     {% endif %}
     {% if type == "daily" %}
         <canvas id="dailyChart" width="500" height="200"></canvas>
+        <canvas id="myChart2" width="400" height="120"></canvas>
     {% endif %}
-
-    {#    <canvas id="myChart3" width="400" height="120"></canvas>#}
-
 {% endblock content %}
