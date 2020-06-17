@@ -28,10 +28,10 @@
                                              class="img-thumbnail">
                                     </div>
                                 </div>
-                                <b>Температура:</b> {{ city.information.temperature }} <sup>o</sup> <br>
-                                <b>Чувствуется как:</b> {{ city.information.feels_like }} <sup>o</sup> <br>
-                                <b>Минимальная температура:</b> {{ city.information.temp_min }} <sup>o</sup> <br>
-                                <b>Максимальная температура:</b> {{ city.information.temp_max }} <sup>o</sup> <br>
+                                <b>Температура:</b> {{ city.information.temperature }} <sup>o</sup>С<br>
+                                <b>Чувствуется как:</b> {{ city.information.feels_like }} <sup>o</sup>С<br>
+                                <b>Минимальная температура:</b> {{ city.information.temp_min }} <sup>o</sup>С<br>
+                                <b>Максимальная температура:</b> {{ city.information.temp_max }} <sup>o</sup>С<br>
                                 <b>Облачность:</b> {{ city.information.sky }}<br>
                                 <b>Давление:</b> {{ city.information.pressure }} hPa <br>
                                 <b>Влажность:</b> {{ city.information.humidity }} % <br>
@@ -46,14 +46,13 @@
                                 var mymap = L.map('MyMap').setView([
                                     {% for city in cur_city %}
                                         {{ city.information.coord_lat }}, {{ city.information.coord_lon }}], 8);
+                                        const marker = L.marker([0, 0]).addTo(mymap)
+                                        const attribution = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors';
+                                        const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+                                        const tiles = L.tileLayer(tileUrl, {attribution});
+                                        tiles.addTo(mymap)
+                                        marker.setLatLng([{{ city.information.coord_lat }}, {{ city.information.coord_lon }}])
                                     {% endfor %}
-                                const attribution = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors';
-                                const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-                                const tiles = L.tileLayer(tileUrl, {attribution});
-                                tiles.addTo(mymap)
-                                {% for city in cur_city %}
-                                    L.marker([{{ city.information.coord_lat }}, {{ city.information.coord_lon }}]).addTo(mymap);
-                                {% endfor %}
                             </script>
                         </div>
                     </div>
