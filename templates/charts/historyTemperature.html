@@ -22,12 +22,7 @@
                             {% endfor %}
                         ],
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
+                            'rgba(74,245,182,0.2)',
                         ],
                         borderColor: [
                             'rgb(208,80,108)',
@@ -50,8 +45,97 @@
             })
         });
     </script>
+
+      <script>
+        $(document).ready(function () {
+            var ctx = document.getElementById('myChart2').getContext('2d');
+            var myChart2 = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [{% for item in history_context %}'{{ item.time }}',{% endfor %}
+                    ],
+                    datasets: [{
+                        label: '# temp of {{ city.name }}',
+                        data: [{% for item in history_context %}{{ item.temp }}, {% endfor %}
+                        ],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(222,45,51,0.2)',
+                            'rgba(20,245,110,0.2)',
+                            'rgba(4,187,146,0.2)',
+                            'rgba(208,124,60,0.2)',
+                            'rgba(201,179,55,0.2)',
+                            'rgba(253,10,67,0.2)',
+                            'rgba(134,168,255,0.2)',
+                            'rgba(26,243,53,0.2)',
+                            'rgba(21,134,7,0.2)',
+                            'rgba(220,57,57,0.2)',
+                            'rgba(11,53,141,0.2)',
+                            'rgba(255,4,4,0.2)',
+                            'rgba(22,238,173,0.2)',
+                            'rgba(9,255,169,0.2)',
+                            'rgba(220,57,57,0.2)',
+                            'rgba(19,232,24,0.2)',
+                            'rgba(0,6,245,0.2)',
+                            'rgba(14,220,26,0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                             'rgba(255, 99, 132)',
+                            'rgba(54, 162, 235)',
+                            'rgba(255, 206, 86)',
+                            'rgba(75, 192, 192)',
+                            'rgba(153, 102, 255)',
+                            'rgba(222,45,51)',
+                            'rgba(20,245,110)',
+                            'rgba(4,187,146)',
+                            'rgba(208,124,60)',
+                            'rgba(201,179,55)',
+                            'rgba(253,10,67)',
+                            'rgba(134,168,255)',
+                            'rgba(26,243,53)',
+                            'rgba(21,134,7)',
+                            'rgba(220,57,57)',
+                            'rgba(11,53,141)',
+                            'rgba(255,4,4)',
+                            'rgba(22,238,173)',
+                            'rgba(9,255,169)',
+                            'rgba(220,57,57)',
+                            'rgba(19,232,24)',
+                            'rgba(0,6,245)',
+                            'rgba(14,220,26)',
+                            'rgba(255, 159, 64)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    layout: {
+                        padding: {
+                            left: 250,
+                            right: 250,
+                            top: 10
+                        }
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    </script>
+
 {% endblock scripts %}
 
 {% block content %}
     <canvas id="myChart" width="500" height="150"></canvas>
+    <canvas id="myChart2" width="400" height="120"></canvas>
 {% endblock content %}

@@ -53,6 +53,12 @@ class AddCityView(BaseView):
         cities = City.objects.all()
         for city in cities:
             res = requests.get(url.format(city.name)).json()
+            if res["cod"] == "404":
+                City.objects.get(name=info_form_data["name"]).delete()
+                redirect("current_temp")
+                break
+
+            print("API RESPONSE:", res)
             city_info = {
                 'coord_lon': res["coord"]["lon"],
                 'coord_lat': res["coord"]["lat"],
@@ -217,9 +223,10 @@ class CityForecastView(BaseView):
 
         lat = Information.objects.get(city_id=kwargs["pk"]).coord_lat
         lon = Information.objects.get(city_id=kwargs["pk"]).coord_lon
-        type = "current"
+        # response daily + hourly
+        type_request = "current"
 
-        res = requests.get(url.format(lat, lon, type)).json()
+        res = requests.get(url.format(lat, lon, type_request)).json()
 
         city_name = City.objects.get(id=kwargs["pk"])
         context["city"] = city_name
@@ -235,6 +242,7 @@ class CityForecastView(BaseView):
             all_forecast.append(forecast_info)
 
         context["forecast_context"] = all_forecast
+        context["type"] = kwargs["type"]
 
         print(context["forecast_context"])
 

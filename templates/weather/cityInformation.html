@@ -1,4 +1,5 @@
 {% extends 'weather/base.html' %}
+{% load static %}
 {% block content %}
     <div class="container">
         <div class="row">
@@ -38,6 +39,23 @@
                                 <hr>
                             </div>
                         </div>
+                        <h4 class="alert-heading">Карта</h4>
+                        <br>
+                        <div id="MyMap">
+                            <script>
+                                var mymap = L.map('MyMap').setView([
+                                    {% for city in cur_city %}
+                                        {{ city.information.coord_lat }}, {{ city.information.coord_lon }}], 8);
+                                    {% endfor %}
+                                const attribution = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors';
+                                const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+                                const tiles = L.tileLayer(tileUrl, {attribution});
+                                tiles.addTo(mymap)
+                                {% for city in cur_city %}
+                                    L.marker([{{ city.information.coord_lat }}, {{ city.information.coord_lon }}]).addTo(mymap);
+                                {% endfor %}
+                            </script>
+                        </div>
                     </div>
                     </div>
                     <div class="col-5 offset-2 ">
@@ -45,7 +63,8 @@
                             <h1>Графики</h1>
                             <div class="alert alert-success">
                                 <h4 class="alert-heading">История</h4>
-                                <p>Вы можете посмотреть историю температуры в удобном виде. <br> Нажмите на кнопку ниже
+                                <p>Вы можете посмотреть историю температуры n-го дня назад в удобном виде. <br> Нажмите
+                                    на кнопку ниже
                                     чтобы
                                     продолжить</p>
                                 <hr>
