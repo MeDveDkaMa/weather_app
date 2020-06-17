@@ -15,7 +15,7 @@
                 <form action="{% url 'add_city_by_coord' %}" method="post" id="addFormID">
                     {% csrf_token %}
                     <label for="city"></label><br><br>
-                    <input type="submit" name="send" value="Узнать" class="mt-1 btn btn-danger">
+                    <input type="submit" name="send" value="Узнать по координатам" class="mt-1 btn btn-danger">
                     {{ formCoord.coord_lon }}
                     {{ formCoord.coord_lat }}
                 </form>
@@ -38,13 +38,6 @@
                         });
                     </script>
                 </div>
-                <form action="{% url 'add_city_by_coord' %}" method="post" id="addFormID">
-                    {% csrf_token %}
-                    <label for="city"></label><br><br>
-                    <input type="submit" name="send" value="Узнать" class="mt-1 btn btn-danger">
-                    {{ formCoord.coord_lon }}
-                    {{ formCoord.coord_lat }}
-                </form>
             </div>
             <div class="col-5 offset-2 ">
                 <div class="row">

@@ -115,6 +115,7 @@ class AddCityByCoordView(BaseView):
 
         context = super().get_context_data(**kwargs)
         form = AddCityFormByID(request.POST)
+        print(request.POST)
         if form.is_valid():
             form.save(commit=False)
         else:
@@ -122,7 +123,8 @@ class AddCityByCoordView(BaseView):
         res = requests.get(url.format(request.POST['coord_lat'], request.POST['coord_lon'])).json()
         print(res)
 
-        info_form_data = form.cleaned_data
+        if res["cod"] == "400" or res["name"] == "":
+            return redirect("current_temp")
 
         try:
             info_city = City.objects.create(name=res["name"])
