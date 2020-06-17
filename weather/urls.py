@@ -3,7 +3,8 @@ from . import views
 
 urlpatterns = [
     path('', views.CurrentTemperatureView.as_view(), name="current_temp"),
-    path('api/add/', views.AddCityView.as_view(), name="add_city"),
+    path('api/add/city/name', views.AddCityByNameView.as_view(), name="add_city"),
+    path('api/add/city/coord', views.AddCityByCoordView.as_view(), name="add_city_by_coord"),
     path('api/info/<int:pk>/', views.InformationCityView.as_view(), name="information_city"),
     path('api/history/<int:pk>/time/<int:time>/', views.CityTemperatureHistoryView.as_view(), name="history_city"),
     path('api/info/update/', views.UpdateInformationView.as_view(), name="update_info"),
