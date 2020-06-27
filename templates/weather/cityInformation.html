@@ -61,7 +61,7 @@
                         <div class="row">
                             <h1>Графики</h1>
                             <div class="alert alert-success">
-                                <h4 class="alert-heading">История</h4>
+                                <h4 class="alert-heading">История в конкретный день</h4>
                                 <p>Вы можете посмотреть историю температуры n-го дня назад в удобном виде. <br> Нажмите
                                     на кнопку ниже
                                     чтобы
@@ -69,31 +69,76 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-1">
-                                        <form action="{% url 'history_city' city.information.city_id 86400 %}"
+                                        <form action="{% url 'history_city' city.information.city_id 86400 1 %}"
                                               method="get">
                                             <input type="submit" name="" value="24 часа"
                                                    class="mt-2 btn btn-danger">
                                         </form>
                                     </div>
                                     <div class="col-md-1 offset-md-2">
-                                        <form action="{% url 'history_city' city.information.city_id 172800 %}"
+                                        <form action="{% url 'history_city' city.information.city_id 172800 1 %}"
                                               method="get">
                                             <input type="submit" name="" value="2 дня"
                                                    class="mt-2 btn btn-danger">
                                         </form>
                                     </div>
                                     <div class="col-md-1 offset-md-2 ">
-                                        <form action="{% url 'history_city' city.information.city_id 259200 %}"
+                                        <form action="{% url 'history_city' city.information.city_id 259200 1 %}"
                                               method="get">
                                             <input type="submit" name="" value="3 дня"
                                                    class="mt-2 btn btn-danger">
                                         </form>
                                     </div>
                                     <div class="col-md-1 offset-md-2 ">
-                                        <form action="{% url 'history_city' city.information.city_id 345600 %}"
+                                        <form action="{% url 'history_city' city.information.city_id 345600 1 %}"
                                               method="get">
                                             <input type="submit" name="" value="4 дня"
                                                    class="mt-2 btn btn-danger">
+                                        </form>
+                                    </div>
+                                </div>
+                                <br>
+                                <h4 class="alert-heading">История за промежуток</h4>
+                                <p>Вы можете посмотреть историю температуры за определенный промежуток времени в удобном
+                                    виде. <br> Нажмите
+                                    на кнопку ниже
+                                    чтобы
+                                    продолжить</p>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <form action="{% url 'history_city' city.information.city_id 86400 2 %}"
+                                              method="get">
+                                            <input type="submit" name="" value="1 день"
+                                                   class="mt-2 btn btn-danger btn-sm">
+                                        </form>
+                                    </div>
+                                    <div class="col-md-1 offset-md-1">
+                                        <form action="{% url 'history_city' city.information.city_id 172800 2 %}"
+                                              method="get">
+                                            <input type="submit" name="" value="2 дня"
+                                                   class="mt-2 btn btn-danger btn-sm">
+                                        </form>
+                                    </div>
+                                    <div class="col-md-1 offset-md-1 ">
+                                        <form action="{% url 'history_city' city.information.city_id 259200 2 %}"
+                                              method="get">
+                                            <input type="submit" name="" value="3 дня"
+                                                   class="mt-2 btn btn-danger btn-sm">
+                                        </form>
+                                    </div>
+                                    <div class="col-md-1 offset-md-1 ">
+                                        <form action="{% url 'history_city' city.information.city_id 345600 2 %}"
+                                              method="get">
+                                            <input type="submit" name="" value="4 дня"
+                                                   class="mt-2 btn btn-danger btn-sm">
+                                        </form>
+                                    </div>
+                                    <div class="col-md-1 offset-md-1 ">
+                                        <form action="{% url 'history_city' city.information.city_id 432000 2 %}"
+                                              method="get">
+                                            <input type="submit" name="" value="5 дня"
+                                                   class="mt-2 btn btn-danger btn-sm">
                                         </form>
                                     </div>
                                 </div>

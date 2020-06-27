@@ -259,8 +259,8 @@ class AllCityTemperatureView(BaseView):
         return context
 
 
-class CityTemperatureHistoryView(BaseView):
-    template_name = 'charts/historyTemperature.html'
+class CityHistoryView(BaseView):
+    template_name = 'charts/historyInformation.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -270,24 +270,48 @@ class CityTemperatureHistoryView(BaseView):
 
         lat = Information.objects.get(city_id=kwargs["pk"]).coord_lat
         lon = Information.objects.get(city_id=kwargs["pk"]).coord_lon
-        # Current unix time - 1 day
-        dt = int(time.time()) + 360 - kwargs["time"]
-        res = requests.get(url.format(lat, lon, dt)).json()
-        city_name = City.objects.get(id=kwargs["pk"])
-        context["city"] = city_name
 
         all_history = []
-        for i in range(0, 24):
-            history_info = {
-                'time': datetime.utcfromtimestamp(res["hourly"][i]["dt"] +
-                                                  res["timezone_offset"]).strftime('%Y-%m-%d %H:%M '),
-                'temp': res["hourly"][i]["temp"],
-            }
-            all_history.append(history_info)
 
-        context["history_context"] = all_history
+        if kwargs["type"] == 1:
+            # Current unix time - 1 day
+            dt = int(time.time()) + 360 - kwargs["time"]
+            res = requests.get(url.format(lat, lon, dt)).json()
+            print(url.format(lat, lon, dt))
+            city_name = City.objects.get(id=kwargs["pk"])
+            context["city"] = city_name
 
-        print(context["history_context"])
+            for i in range(0, 24):
+                history_info = {
+                    'time': datetime.utcfromtimestamp(res["hourly"][i]["dt"] +
+                                                      res["timezone_offset"]).strftime('%Y-%m-%d %H:%M '),
+                    'temp': res["hourly"][i]["temp"],
+                }
+                all_history.append(history_info)
+
+            context["history_context"] = all_history
+            print(context["history_context"])
+
+        if kwargs["type"] == 2:
+            while kwargs["time"] >= 86400:
+                # Current unix time - 1 day
+                dt = int(time.time()) + 360 - kwargs["time"]
+                res = requests.get(url.format(lat, lon, dt)).json()
+                print("API PER DAY", url.format(lat, lon, dt))
+                city_name = City.objects.get(id=kwargs["pk"])
+                context["city"] = city_name
+
+                for i in range(0, 24):
+                    history_info = {
+                        'time': datetime.utcfromtimestamp(res["hourly"][i]["dt"] +
+                                                          res["timezone_offset"]).strftime('%Y-%m-%d %H:%M '),
+                        'temp': res["hourly"][i]["temp"],
+                    }
+                    all_history.append(history_info)
+                kwargs["time"] -= 86400
+                print("TIME: ", kwargs["time"])
+            context["history_context"] = all_history
+            print("HISTORY PER DAY : ", context["history_context"])
 
         return context
 
