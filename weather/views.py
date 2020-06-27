@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from .models import City, Information
@@ -54,7 +54,7 @@ class AddCityByNameView(BaseView):
         cities = City.objects.all()
         for city in cities:
             res = requests.get(url.format(city.name)).json()
-            if res["cod"] == "404":
+            if res["cod"] == "404" or not ('country' in res["sys"]):
                 City.objects.get(name=info_form_data["name"]).delete()
                 redirect("current_temp")
                 break
@@ -115,19 +115,18 @@ class AddCityByCoordView(BaseView):
 
         context = super().get_context_data(**kwargs)
         form = AddCityFormByID(request.POST)
-        print(request.POST)
         if form.is_valid():
             form.save(commit=False)
         else:
             redirect("/")
-        res = requests.get(url.format(request.POST['coord_lat'], request.POST['coord_lon'])).json()
-        print(res)
 
-        if res["cod"] == "400" or res["name"] == "":
+        res_coord = requests.get(url.format(request.POST['coord_lat'], request.POST['coord_lon'])).json()
+
+        if res_coord["cod"] == "400" or not ("name" in res_coord) or (res_coord["name"] == ""):
             return redirect("current_temp")
 
         try:
-            info_city = City.objects.create(name=res["name"])
+            info_city = City.objects.create(name=res_coord["name"])
         except:
             raise Http404
 
@@ -135,7 +134,7 @@ class AddCityByCoordView(BaseView):
         for city in cities:
             res = requests.get(url2.format(city.name)).json()
             if res["cod"] == "404":
-                City.objects.get(name=res["name"]).delete()
+                City.objects.get(name=res_coord["name"]).delete()
                 redirect("current_temp")
                 break
 
