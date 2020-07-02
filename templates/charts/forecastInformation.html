@@ -14,7 +14,7 @@
                         datasets: [{
                             pointRadius: 4,
                             fill: 'false',
-                            label: 'temp of {{ city.name }}',
+                            label: 'Прогноз температуры в  {{ city.name }}',
                             pointStyle: "circle",
                             data: [
                                 {% for item in forecast_context %}
@@ -46,7 +46,7 @@
                             {
                                 pointRadius: 4,
                                 fill: 'false',
-                                label: 'feels like',
+                                label: 'Чувствуется как',
                                 pointStyle: "circle",
                                 data: [
                                     {% for item in forecast_context %}
@@ -100,7 +100,7 @@
                         datasets: [{
                             pointRadius: 4,
                             fill: 'false',
-                            label: 'temp of {{ city.name }}',
+                            label: 'Текущая температура в {{ city.name }}',
                             pointStyle: "circle",
                             data: [
                                 {% for item in forecast_context %}
@@ -132,7 +132,7 @@
                             {
                                 pointRadius: 4,
                                 fill: 'false',
-                                label: 'feels like',
+                                label: 'Чувствуется как',
                                 pointStyle: "circle",
                                 data: [
                                     {% for item in forecast_context %}
@@ -176,36 +176,36 @@
         </script>
         <script>
             $(document).ready(function () {
-                var ctx = document.getElementById("myChart2").getContext("2d");
-                var myChart2 = new Chart(ctx, {
+                var backgroundColor = [];
+                {% for item in forecast_context %}
+                    var randomR = Math.floor((Math.random() * 200) + 100);
+                    var randomG = Math.floor((Math.random() * 200) + 100);
+                    var randomB = Math.floor((Math.random() * 200) + 100);
+                    var graphBackgrounds = "rgb("
+                        + randomR + ", "
+                        + randomG + ", "
+                        + randomB + ")";
+                    backgroundColor.push(graphBackgrounds);
+                {% endfor %}
+                var ctx = document.getElementById("pressureChart").getContext("2d");
+                var pressureChart = new Chart(ctx, {
                     type: 'pie',
                     data: {
                         labels: [
                             {% for item in forecast_context %}
-                                "{{ item.info.weather.0.main }}",
+                                "{{ item.time }}",
                             {% endfor %}
 
                         ],
                         datasets: [{
                             pointRadius: 1,
                             fill: 'start',
-                            label: 'temp of {{ city.name }}',
                             data: [
                                 {% for item in forecast_context %}
-                                    {{ item.info.temp.day }},
+                                    {{ item.pressure }},
                                 {% endfor %}
                             ],
-                            backgroundColor: [
-                                {% for item in forecast_context %}
-                                    'rgba(15,151,241,0.2)',
-                                {% endfor %}
-
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(255, 206, 86, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(255, 159, 64, 0.2)'
-                            ],
+                            backgroundColor: backgroundColor,
                             borderColor: [
                                 'rgba(75, 192, 192, 1)',
                             ],
@@ -226,10 +226,13 @@
 
 {% block content %}
     {% if type == "hourly" %}
+        <h1 align="center">Температура в {{ city.name }}</h1>
         <canvas id="hourlyChart" width="500" height="200"></canvas>
     {% endif %}
     {% if type == "daily" %}
+        <h1 align="center">Температура в {{ city.name }}</h1>
         <canvas id="dailyChart" width="500" height="200"></canvas>
-        <canvas id="myChart2" width="400" height="120"></canvas>
+        <h1 align="center">Давление</h1>
+        <canvas id="pressureChart" width="400" height="120"></canvas>
     {% endif %}
 {% endblock content %}

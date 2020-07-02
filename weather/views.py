@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from .models import City, Information
@@ -54,12 +54,11 @@ class AddCityByNameView(BaseView):
         cities = City.objects.all()
         for city in cities:
             res = requests.get(url.format(city.name)).json()
-            if res["cod"] == "404":
+            if res["cod"] == "404" or not ('country' in res["sys"]):
                 City.objects.get(name=info_form_data["name"]).delete()
                 redirect("current_temp")
                 break
 
-            print("API RESPONSE:", res)
             city_info = {
                 'coord_lon': res["coord"]["lon"],
                 'coord_lat': res["coord"]["lat"],
@@ -69,7 +68,7 @@ class AddCityByNameView(BaseView):
                 'temp_feels': res["main"]["feels_like"],
                 'temp_min': res["main"]["temp_min"],
                 'temp_max': res["main"]["temp_max"],
-                'pressure': res["main"]["pressure"],
+                'pressure': res["main"]["pressure"] // 1.333224,
                 'humidity': res["main"]["humidity"],
                 'speed': res["wind"]["speed"],
                 'time': datetime.utcfromtimestamp(time.time() + res["timezone"]).strftime('%H:%M:%S %Y-%m-%d '),
@@ -104,7 +103,6 @@ class AddCityByCoordView(BaseView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(context)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -115,19 +113,18 @@ class AddCityByCoordView(BaseView):
 
         context = super().get_context_data(**kwargs)
         form = AddCityFormByID(request.POST)
-        print(request.POST)
         if form.is_valid():
             form.save(commit=False)
         else:
             redirect("/")
-        res = requests.get(url.format(request.POST['coord_lat'], request.POST['coord_lon'])).json()
-        print(res)
 
-        if res["cod"] == "400" or res["name"] == "":
+        res_coord = requests.get(url.format(request.POST['coord_lat'], request.POST['coord_lon'])).json()
+
+        if res_coord["cod"] == "400" or not ("name" in res_coord) or (res_coord["name"] == ""):
             return redirect("current_temp")
 
         try:
-            info_city = City.objects.create(name=res["name"])
+            info_city = City.objects.create(name=res_coord["name"])
         except:
             raise Http404
 
@@ -135,11 +132,10 @@ class AddCityByCoordView(BaseView):
         for city in cities:
             res = requests.get(url2.format(city.name)).json()
             if res["cod"] == "404":
-                City.objects.get(name=res["name"]).delete()
+                City.objects.get(name=res_coord["name"]).delete()
                 redirect("current_temp")
                 break
 
-            print("API RESPONSE:", res)
             city_info = {
                 'coord_lon': res["coord"]["lon"],
                 'coord_lat': res["coord"]["lat"],
@@ -149,7 +145,7 @@ class AddCityByCoordView(BaseView):
                 'temp_feels': res["main"]["feels_like"],
                 'temp_min': res["main"]["temp_min"],
                 'temp_max': res["main"]["temp_max"],
-                'pressure': res["main"]["pressure"],
+                'pressure': res["main"]["pressure"] // 1.333224,
                 'humidity': res["main"]["humidity"],
                 'speed': res["wind"]["speed"],
                 'time': datetime.utcfromtimestamp(time.time() + res["timezone"]).strftime('%H:%M:%S %Y-%m-%d '),
@@ -211,7 +207,7 @@ class UpdateInformationView(BaseView):
                 'temp_feels': res["main"]["feels_like"],
                 'temp_min': res["main"]["temp_min"],
                 'temp_max': res["main"]["temp_max"],
-                'pressure': res["main"]["pressure"],
+                'pressure': res["main"]["pressure"] // 1.333224,
                 'humidity': res["main"]["humidity"],
                 'speed': res["wind"]["speed"],
                 'time': datetime.utcfromtimestamp(time.time() + res["timezone"]).strftime('%H:%M:%S %Y-%m-%d '),
@@ -220,7 +216,6 @@ class UpdateInformationView(BaseView):
                 'sunset': datetime.utcfromtimestamp(res["sys"]["sunset"] + res["timezone"]).strftime('%H:%M:%S'),
                 'city': city.name,
             }
-            print("API RESPONSE:", city_info)
 
             Information.objects.filter(city_id=city.id).update(coord_lon=city_info['coord_lon'])
             Information.objects.filter(city_id=city.id).update(coord_lat=city_info['coord_lat'])
@@ -260,8 +255,8 @@ class AllCityTemperatureView(BaseView):
         return context
 
 
-class CityTemperatureHistoryView(BaseView):
-    template_name = 'charts/historyTemperature.html'
+class CityHistoryView(BaseView):
+    template_name = 'charts/historyInformation.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -271,30 +266,49 @@ class CityTemperatureHistoryView(BaseView):
 
         lat = Information.objects.get(city_id=kwargs["pk"]).coord_lat
         lon = Information.objects.get(city_id=kwargs["pk"]).coord_lon
-        # Current unix time - 1 day
-        dt = int(time.time()) + 360 - kwargs["time"]
-        res = requests.get(url.format(lat, lon, dt)).json()
-        city_name = City.objects.get(id=kwargs["pk"])
-        context["city"] = city_name
 
         all_history = []
-        for i in range(0, 24):
-            history_info = {
-                'time': datetime.utcfromtimestamp(res["hourly"][i]["dt"] +
-                                                  res["timezone_offset"]).strftime('%Y-%m-%d %H:%M '),
-                'temp': res["hourly"][i]["temp"],
-            }
-            all_history.append(history_info)
 
-        context["history_context"] = all_history
+        if kwargs["type"] == 1:
+            # Current unix time - 1 day
+            dt = int(time.time()) + 360 - kwargs["time"]
+            res = requests.get(url.format(lat, lon, dt)).json()
+            city_name = City.objects.get(id=kwargs["pk"])
+            context["city"] = city_name
 
-        print(context["history_context"])
+            for i in range(0, 24):
+                history_info = {
+                    'time': datetime.utcfromtimestamp(res["hourly"][i]["dt"] +
+                                                      res["timezone_offset"]).strftime('%Y-%m-%d %H:%M '),
+                    'temp': res["hourly"][i]["temp"],
+                }
+                all_history.append(history_info)
 
+            context["history_context"] = all_history
+            print(context["history_context"])
+
+        if kwargs["type"] == 2:
+            while kwargs["time"] >= 86400:
+                # Current unix time - 1 day
+                dt = int(time.time()) + 360 - kwargs["time"]
+                res = requests.get(url.format(lat, lon, dt)).json()
+                city_name = City.objects.get(id=kwargs["pk"])
+                context["city"] = city_name
+
+                for i in range(0, 24):
+                    history_info = {
+                        'time': datetime.utcfromtimestamp(res["hourly"][i]["dt"] +
+                                                          res["timezone_offset"]).strftime('%Y-%m-%d %H:%M '),
+                        'temp': res["hourly"][i]["temp"],
+                    }
+                    all_history.append(history_info)
+                kwargs["time"] -= 86400
+            context["history_context"] = all_history
         return context
 
 
 class CityForecastView(BaseView):
-    template_name = 'charts/forecastTemperature.html'
+    template_name = 'charts/forecastInformation.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -318,6 +332,7 @@ class CityForecastView(BaseView):
             forecast_info = {
                 'time': datetime.utcfromtimestamp(res[kwargs["type"]][i]["dt"] +
                                                   res["timezone_offset"]).strftime('%m-%d %H:%M '),
+                'pressure': res[kwargs["type"]][i]['pressure'] // 1.333224,
                 'info': res[kwargs["type"]][i],
             }
             all_forecast.append(forecast_info)

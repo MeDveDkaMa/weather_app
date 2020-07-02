@@ -23,13 +23,13 @@
                 <div id="indexMap">
                     <script>
                         var mymap = L.map('indexMap').setView([
-                            58, 38], 5);
-                        const marker = L.marker([58, 35], {draggable: true}).addTo(mymap)
+                            0, 0], 1);
+                        const marker = L.marker([0, 0], {draggable: true}).addTo(mymap)
                         const attribution = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors';
                         const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
                         const tiles = L.tileLayer(tileUrl, {attribution});
                         tiles.addTo(mymap)
-                        marker.setLatLng([58, 35])
+                        marker.setLatLng([0, 0])
                         marker.on('dragend', function (e) {
                             lon = marker.getLatLng().lng;
                             lat = marker.getLatLng().lat;
