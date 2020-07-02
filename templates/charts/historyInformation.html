@@ -12,7 +12,7 @@
                     labels: [],
                     datasets: [{
                         pointRadius: 4,
-                        label: 'temp in {{ city.name }}',
+                        label: 'Температура в {{ city.name }}',
                         data: [
                             {% for item in history_context %}
                                 {
@@ -76,7 +76,7 @@
                     labels: [{% for item in history_context %}'{{ item.time }}',{% endfor %}
                     ],
                     datasets: [{
-                        label: '# temp in {{ city.name }}',
+                        label: '# Температура в {{ city.name }}',
                         data: [{% for item in history_context %}{{ item.temp }}, {% endfor %}
                         ],
                         backgroundColor: backgroundColor,
@@ -107,7 +107,7 @@
 {% endblock scripts %}
 
 {% block content %}
-    <h1 align="center">Температура</h1>
+    <h1 align="center">История температуры в {{ city.name }}</h1>
     <canvas id="myChart" width="500" height="150"></canvas>
     <canvas id="myChart2" width="400" height="120"></canvas>
 {% endblock content %}

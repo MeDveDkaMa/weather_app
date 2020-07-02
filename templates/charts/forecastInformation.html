@@ -14,7 +14,7 @@
                         datasets: [{
                             pointRadius: 4,
                             fill: 'false',
-                            label: 'temp of {{ city.name }}',
+                            label: 'Прогноз температуры в  {{ city.name }}',
                             pointStyle: "circle",
                             data: [
                                 {% for item in forecast_context %}
@@ -46,7 +46,7 @@
                             {
                                 pointRadius: 4,
                                 fill: 'false',
-                                label: 'feels like',
+                                label: 'Чувствуется как',
                                 pointStyle: "circle",
                                 data: [
                                     {% for item in forecast_context %}
@@ -100,7 +100,7 @@
                         datasets: [{
                             pointRadius: 4,
                             fill: 'false',
-                            label: 'temp of {{ city.name }}',
+                            label: 'Текущая температура в {{ city.name }}',
                             pointStyle: "circle",
                             data: [
                                 {% for item in forecast_context %}
@@ -132,7 +132,7 @@
                             {
                                 pointRadius: 4,
                                 fill: 'false',
-                                label: 'feels like',
+                                label: 'Чувствуется как',
                                 pointStyle: "circle",
                                 data: [
                                     {% for item in forecast_context %}
@@ -200,7 +200,6 @@
                         datasets: [{
                             pointRadius: 1,
                             fill: 'start',
-                            label: 'temp of {{ city.name }}',
                             data: [
                                 {% for item in forecast_context %}
                                     {{ item.pressure }},
@@ -227,11 +226,11 @@
 
 {% block content %}
     {% if type == "hourly" %}
-        <h1 align="center">Температура</h1>
+        <h1 align="center">Температура в {{ city.name }}</h1>
         <canvas id="hourlyChart" width="500" height="200"></canvas>
     {% endif %}
     {% if type == "daily" %}
-        <h1 align="center">Температура</h1>
+        <h1 align="center">Температура в {{ city.name }}</h1>
         <canvas id="dailyChart" width="500" height="200"></canvas>
         <h1 align="center">Давление</h1>
         <canvas id="pressureChart" width="400" height="120"></canvas>
