@@ -210,7 +210,7 @@ class UpdateInformationView(BaseView):
                 'temp_feels': res["main"]["feels_like"],
                 'temp_min': res["main"]["temp_min"],
                 'temp_max': res["main"]["temp_max"],
-                'pressure': res["main"]["pressure"],
+                'pressure': res["main"]["pressure"]/1.333224,
                 'humidity': res["main"]["humidity"],
                 'speed': res["wind"]["speed"],
                 'time': datetime.utcfromtimestamp(time.time() + res["timezone"]).strftime('%H:%M:%S %Y-%m-%d '),
@@ -317,7 +317,7 @@ class CityHistoryView(BaseView):
 
 
 class CityForecastView(BaseView):
-    template_name = 'charts/forecastTemperature.html'
+    template_name = 'charts/forecastInformation.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -331,6 +331,7 @@ class CityForecastView(BaseView):
         type_request = "current"
 
         res = requests.get(url.format(lat, lon, type_request)).json()
+        print(url.format(lat, lon, type_request))
 
         city_name = City.objects.get(id=kwargs["pk"])
         context["city"] = city_name
