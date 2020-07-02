@@ -69,7 +69,7 @@ class AddCityByNameView(BaseView):
                 'temp_feels': res["main"]["feels_like"],
                 'temp_min': res["main"]["temp_min"],
                 'temp_max': res["main"]["temp_max"],
-                'pressure': res["main"]["pressure"],
+                'pressure': res["main"]["pressure"]//1.333224,
                 'humidity': res["main"]["humidity"],
                 'speed': res["wind"]["speed"],
                 'time': datetime.utcfromtimestamp(time.time() + res["timezone"]).strftime('%H:%M:%S %Y-%m-%d '),
@@ -210,7 +210,7 @@ class UpdateInformationView(BaseView):
                 'temp_feels': res["main"]["feels_like"],
                 'temp_min': res["main"]["temp_min"],
                 'temp_max': res["main"]["temp_max"],
-                'pressure': res["main"]["pressure"]/1.333224,
+                'pressure': res["main"]["pressure"]//1.333224,
                 'humidity': res["main"]["humidity"],
                 'speed': res["wind"]["speed"],
                 'time': datetime.utcfromtimestamp(time.time() + res["timezone"]).strftime('%H:%M:%S %Y-%m-%d '),
@@ -342,6 +342,7 @@ class CityForecastView(BaseView):
             forecast_info = {
                 'time': datetime.utcfromtimestamp(res[kwargs["type"]][i]["dt"] +
                                                   res["timezone_offset"]).strftime('%m-%d %H:%M '),
+                'pressure': res[kwargs["type"]][i]['pressure']//1.333224,
                 'info': res[kwargs["type"]][i],
             }
             all_forecast.append(forecast_info)

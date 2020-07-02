@@ -203,7 +203,7 @@
                             label: 'temp of {{ city.name }}',
                             data: [
                                 {% for item in forecast_context %}
-                                    {{ item.info.pressure }},
+                                    {{ item.pressure }},
                                 {% endfor %}
                             ],
                             backgroundColor: backgroundColor,
@@ -227,6 +227,7 @@
 
 {% block content %}
     {% if type == "hourly" %}
+        <h1 align="center">Температура</h1>
         <canvas id="hourlyChart" width="500" height="200"></canvas>
     {% endif %}
     {% if type == "daily" %}
