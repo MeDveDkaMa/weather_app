@@ -10,3 +10,6 @@ Simple web application for weather. Django + Chart.js.
 ### Windows
 1. Install python from [official site](https://www.python.org/downloads/)
 2. Use powershell script `start.ps1`
+
+### Docker
+1. Use `docker pull medvedkama/weather_app` && `docker run --name weather -p 8000:8000 -d weather_app`
