@@ -12,4 +12,5 @@ Simple web application for weather. Django + Chart.js.
 2. Use powershell script `start.ps1`
 
 ### Docker
-1. Use `docker pull medvedkama/weather_app:v1` && `docker run --name weather -p 8000:8000 -d weather_app`
+1. `docker pull medvedkama/weather_app:v1`
+2. `docker run --name weather -p 8000:8000 -d medvedkama/weather_app:v1`
